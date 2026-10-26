@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+body{margin:0;background:#eef0f3;font-family:'Figtree',system-ui,sans-serif;color:#0a1b36;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#0a6f8a}
+a:hover{color:#0a2a5c}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #0a6f8a;outline-offset:2px}
+</style>
+</helmet>
+
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:32px 16px">
+  <div style="position:relative;width:390px;height:844px;flex-shrink:0;border-radius:44px;border:1px solid #dde2e8;overflow:hidden;background:#ffffff;font-family:'Figtree',sans-serif;color:#0a1b36;font-variant-numeric:tabular-nums">
+
+    <!-- TODAY -->
+    <sc-if value="{{ is.today }}" hint-placeholder-val="{{ true }}">
+    <div data-screen-label="Today" style="position:absolute;top:50px;left:0;right:0;bottom:84px;overflow-y:auto;scrollbar-width:none;padding-bottom:24px">
+      <div style="padding:22px 24px 0;display:flex;justify-content:space-between;align-items:flex-start">
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-size:48px;font-weight:800;letter-spacing:-.04em;line-height:1">{{ t.today }}</span><span style="width:12px;height:12px;border-radius:50%;background:#0a6f8a;margin-top:6px"></span></div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div style="display:flex;flex-direction:column;align-items:flex-end;font-size:17px;font-weight:500;color:#8a96a8;line-height:1.25"><span>{{ t.dayName }}</span><span>{{ t.monthDay }}</span></div>
+          <button onClick="{{ goAccount }}" aria-label="Account" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:14px;font-weight:700;color:#0a1b36;cursor:pointer">{{ initials }}</button>
+        </div>
+      </div>
+      <div style="margin:14px 24px 0;display:grid;grid-template-columns:1fr 1fr">
+        <div style="padding:4px 0;display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:500;color:#8a96a8;display:flex;align-items:center;gap:6px"><i class="ph ph-currency-dollar" style="font-size:15px"></i>{{ t.earned }}</span><span style="font-size:28px;font-weight:700;letter-spacing:-.02em;color:#0a6f8a">{{ earnedLabel }}</span></div>
+        <div style="padding:4px 0 4px 18px;border-left:1px solid #eef0f3;display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:500;color:#8a96a8;display:flex;align-items:center;gap:6px"><i class="ph ph-map-pin" style="font-size:15px"></i>{{ t.stops }}</span><span style="font-size:28px;font-weight:700;letter-spacing:-.02em">{{ stopsDone }} <span style="color:#b3bcc9;font-weight:600">/ {{ stopsTotal }}</span></span></div>
+      </div>
+
+      <sc-if value="{{ hero.isPool }}" hint-placeholder-val="{{ true }}">
+      <div style="margin:20px 16px 0;border-radius:22px;background:#0a2a5c;color:#fff;padding:18px 18px 16px;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:13px;font-weight:600;color:#b9c8de;display:flex;align-items:center;gap:6px"><i class="ph ph-navigation-arrow" style="font-size:15px"></i>{{ hero.label }}</span><span style="font-size:13px;font-weight:600;color:#b9c8de">{{ hero.fee }}</span></div>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:24px;font-weight:700;letter-spacing:-.02em">{{ hero.name }}</span><span style="font-size:15px;color:#d6e0ee;display:flex;align-items:center;gap:6px">{{ hero.addr }}<sc-if value="{{ hero.hasGate }}" hint-placeholder-val="{{ true }}"><span style="color:#6f86a8">·</span><i class="ph ph-lock-key" style="font-size:15px"></i>{{ hero.gate }}</sc-if></span></div>
+        <div style="display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.4;color:#e4ebf5;padding-top:12px;border-top:1px solid #ffffff1f"><i class="ph ph-note" style="font-size:17px;color:#ff9b84;margin-top:1px"></i><span><b style="font-weight:700">{{ hero.noteDate }}</b> · {{ hero.note }}</span></div>
+        <button onClick="{{ startVisit }}" style="height:52px;border-radius:14px;background:#ffffff;color:#0a2a5c;border:0;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer"><i class="ph-bold ph-play" style="font-size:16px"></i>{{ t.startVisit }}</button>
+      </div>
+      </sc-if>
+      <sc-if value="{{ hero.isStop }}" hint-placeholder-val="{{ false }}">
+      <div style="margin:20px 16px 0;border-radius:22px;background:#0a2a5c;color:#fff;padding:18px 18px 16px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:13px;font-weight:600;color:#b9c8de;display:flex;align-items:center;gap:6px"><i class="{{ hero.iconCls }}" style="font-size:15px"></i>{{ hero.label }}</span>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:24px;font-weight:700;letter-spacing:-.02em">{{ hero.name }}</span><span style="font-size:15px;color:#d6e0ee">{{ hero.sub }}</span></div>
+        <span style="font-size:14px;color:#d6e0ee;padding-top:12px;border-top:1px solid #ffffff1f">{{ t.stopHint }}</span>
+        <button onClick="{{ completeStop }}" style="height:52px;border-radius:14px;background:#ffffff;color:#0a2a5c;border:0;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer"><i class="ph-bold ph-check" style="font-size:16px"></i>{{ t.markDone }}</button>
+      </div>
+      </sc-if>
+      <sc-if value="{{ hero.isDone }}" hint-placeholder-val="{{ false }}">
+      <div style="margin:20px 16px 0;border-radius:22px;background:#0a2a5c;color:#fff;padding:18px 18px 16px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:13px;font-weight:600;color:#b9c8de;display:flex;align-items:center;gap:6px"><i class="ph ph-flag-checkered" style="font-size:15px"></i>{{ t.routeDone }}</span>
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:36px;font-weight:800;letter-spacing:-.03em">{{ earnedLabel }}</span><span style="font-size:15px;color:#d6e0ee">{{ t.earnedTodayFull }}</span></div>
+        <button onClick="{{ goMoney }}" style="height:52px;border-radius:14px;background:#ffffff;color:#0a2a5c;border:0;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer"><i class="ph ph-wallet" style="font-size:17px"></i>{{ t.seeMoney }}</button>
+      </div>
+      </sc-if>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 6px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:17px;font-weight:700;letter-spacing:-.01em">{{ t.route }}</span>
+        <div style="display:flex;gap:8px">
+          <button onClick="{{ goShopping }}" style="height:34px;padding:0 12px;border-radius:999px;background:#fdece8;color:#9a2f17;border:0;display:flex;align-items:center;gap:6px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer"><i class="ph ph-shopping-cart-simple" style="font-size:15px"></i>{{ toBuyLabel }}</button>
+          <button onClick="{{ openAdd }}" style="height:34px;padding:0 12px;border-radius:999px;background:#f2f4f7;color:#0a1b36;border:0;display:flex;align-items:center;gap:6px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer"><i class="ph-bold ph-plus" style="font-size:13px"></i>{{ t.stopShort }}</button>
+        </div>
+      </div>
+      <div style="padding:0 24px">
+        <sc-for list="{{ upcoming }}" as="r" hint-placeholder-count="4">
+          <div onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:14px;min-height:54px;border-top:{{ r.divider }};cursor:pointer">
+            <sc-if value="{{ r.isPool }}" hint-placeholder-val="{{ true }}"><span style="width:24px;height:24px;flex-shrink:0;border-radius:50%;border:1.5px dashed #b3bcc9;font-size:11px;font-weight:700;color:#8a96a8;display:flex;align-items:center;justify-content:center">{{ r.disc }}</span></sc-if>
+            <sc-if value="{{ r.isOther }}" hint-placeholder-val="{{ false }}"><i class="{{ r.iconCls }}" style="width:24px;font-size:22px;color:#c98a12;text-align:center"></i></sc-if>
+            <span style="flex:1;min-width:0;font-size:16px;font-weight:500">{{ r.name }}</span>
+            <span style="font-size:14px;color:#b3bcc9">{{ r.right }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <sc-if value="{{ hasDone }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;justify-content:center;padding-top:10px"><button onClick="{{ toggleDone }}" style="height:34px;padding:0 14px;border-radius:999px;background:#f2f4f7;color:#5b6b82;border:0;display:flex;align-items:center;gap:6px;font-family:inherit;font-size:13px;font-weight:600;cursor:pointer"><i class="ph-fill ph-check-circle" style="font-size:16px;color:#13734a"></i>{{ doneTitle }}<i class="{{ doneCaret }}" style="font-size:13px"></i></button></div>
+        <sc-if value="{{ showDone }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:8px 24px 0">
+          <sc-for list="{{ doneRows }}" as="r" hint-placeholder-count="5">
+            <div onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:14px;min-height:56px;border-top:{{ r.divider }};cursor:pointer">
+              <i class="ph-fill ph-check-circle" style="font-size:26px;color:#13734a"></i>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column"><span style="font-size:16px;font-weight:500;color:#5b6b82">{{ r.name }}</span><span style="font-size:13px;color:#b3bcc9">{{ r.sub }}</span></div>
+              <span style="font-size:15px;font-weight:700;color:{{ r.color }}">{{ r.right }}</span>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+      </sc-if>
+    </div>
+    </sc-if>
+
+    <!-- LOG VISIT -->
+    <sc-if value="{{ is.visit }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Log visit" style="position:absolute;top:50px;left:0;right:0;bottom:100px;overflow-y:auto;scrollbar-width:none;padding-bottom:24px">
+      <div style="padding:8px 16px 0;display:flex;justify-content:space-between;align-items:center">
+        <button onClick="{{ closeVisit }}" aria-label="Close" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;color:#0a1b36;cursor:pointer"><i class="ph-bold ph-x" style="font-size:17px"></i></button>
+        <span style="height:34px;padding:0 12px;border-radius:999px;background:#e8f5ee;color:#0f5c3b;display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600"><i class="ph ph-timer" style="font-size:16px"></i>{{ v.timer }}</span>
+      </div>
+      <div style="padding:16px 24px 0;display:flex;flex-direction:column;gap:4px"><span style="font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1">{{ v.name }}</span><span style="font-size:15px;color:#8a96a8">{{ v.sub }}</span></div>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 4px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-drop-half" style="font-size:19px;color:#0a6f8a"></i>{{ t.readings }}</span><span style="font-size:13px;color:#b3bcc9">{{ v.from }}</span></div>
+      <div style="padding:0 24px">
+        <sc-for list="{{ v.readings }}" as="r" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:10px;height:52px;border-top:{{ r.divider }}">
+            <span style="width:40px;font-size:15px;font-weight:600;color:#5b6b82">{{ r.label }}</span>
+            <span style="flex:1;display:flex;align-items:center;gap:8px"><span style="font-size:20px;font-weight:700">{{ r.value }}</span><span style="height:22px;padding:0 8px;border-radius:6px;background:{{ r.pillBg }};color:{{ r.color }};font-size:12px;font-weight:700;display:inline-flex;align-items:center;transition:background .2s">{{ r.state }}</span></span>
+            <button onClick="{{ r.minus }}" aria-label="Decrease" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#0a1b36"><i class="ph-bold ph-minus" style="font-size:15px"></i></button>
+            <button onClick="{{ r.plus }}" aria-label="Increase" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#0a1b36"><i class="ph-bold ph-plus" style="font-size:15px"></i></button>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 6px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-flask" style="font-size:19px;color:#0a6f8a"></i>{{ t.chems }}</span><button onClick="{{ openChem }}" style="height:32px;padding:0 4px;border:0;background:none;color:#0a6f8a;font-family:inherit;font-size:14px;font-weight:600;display:flex;align-items:center;gap:4px;cursor:pointer"><i class="ph-bold ph-plus" style="font-size:13px"></i>{{ t.add }}</button></div>
+      <div style="padding:0 24px">
+        <sc-for list="{{ v.chems }}" as="c" hint-placeholder-count="2">
+          <div style="display:flex;align-items:center;gap:10px;min-height:56px;border-top:{{ c.divider }}">
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px"><span style="font-size:16px;font-weight:500">{{ c.name }}</span><span style="font-size:12px;font-weight:600;color:{{ c.subColor }}">{{ c.sub }}</span></div>
+            <button onClick="{{ c.minus }}" aria-label="Less" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#0a1b36"><i class="ph-bold ph-minus" style="font-size:15px"></i></button>
+            <span style="min-width:56px;text-align:center;font-size:15px;font-weight:700">{{ c.qty }}</span>
+            <button onClick="{{ c.plus }}" aria-label="More" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#0a1b36"><i class="ph-bold ph-plus" style="font-size:15px"></i></button>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 4px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-list-checks" style="font-size:19px;color:#0a6f8a"></i>{{ t.tasks }}</span><span style="font-size:13px;color:#b3bcc9">{{ v.tasksDone }}</span></div>
+      <div style="padding:0 24px">
+        <sc-for list="{{ v.tasks }}" as="k" hint-placeholder-count="5">
+          <button onClick="{{ k.toggle }}" aria-pressed="{{ k.on }}" style="width:100%;height:52px;display:flex;align-items:center;gap:14px;background:none;border:0;border-top:{{ k.divider }};padding:0;font-family:inherit;color:#0a1b36;cursor:pointer;text-align:left">
+            <sc-if value="{{ k.on }}" hint-placeholder-val="{{ true }}"><i class="ph-fill ph-check-circle" style="font-size:26px;color:#0a2a5c"></i></sc-if>
+            <sc-if value="{{ k.off }}" hint-placeholder-val="{{ false }}"><span style="width:22px;height:22px;margin:0 2px;border-radius:50%;border:1.5px dashed #a3adbb"></span></sc-if>
+            <span style="flex:1;font-size:16px;font-weight:500;color:{{ k.color }}">{{ k.label }}</span>
+            <i class="{{ k.iconCls }}" style="font-size:20px;color:#a3adbb"></i>
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 12px;display:flex;flex-direction:column;gap:2px"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-user-circle" style="font-size:19px;color:#0a6f8a"></i>{{ t.forCustomer }}</span><span style="font-size:13px;color:#8a96a8">{{ t.sentWithReport }}</span></div>
+      <div style="padding:0 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button onClick="{{ togglePhoto }}" aria-pressed="{{ v.photoOn }}" style="min-height:112px;border-radius:18px;background:{{ v.photoBg }};border:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px;font-family:inherit;color:#0a1b36;cursor:pointer;text-align:left"><span style="width:40px;height:40px;border-radius:50%;background:{{ v.photoDot }};color:#fff;display:flex;align-items:center;justify-content:center"><i class="{{ v.photoIcon }}" style="font-size:20px"></i></span><span style="display:flex;flex-direction:column;gap:1px"><span style="font-size:15px;font-weight:700">{{ v.photoTitle }}</span><span style="font-size:12px;color:{{ v.photoSubColor }}">{{ v.photoSub }}</span></span></button>
+        <button onClick="{{ toggleNote }}" aria-pressed="{{ v.noteOn }}" style="min-height:112px;border-radius:18px;background:{{ v.noteBg }};border:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px;font-family:inherit;color:#0a1b36;cursor:pointer;text-align:left"><span style="width:40px;height:40px;border-radius:50%;background:{{ v.noteDot }};color:#fff;display:flex;align-items:center;justify-content:center"><i class="{{ v.noteIcon }}" style="font-size:20px"></i></span><span style="display:flex;flex-direction:column;gap:1px"><span style="font-size:15px;font-weight:700">{{ v.noteTitle }}</span><span style="font-size:12px;color:{{ v.noteSubColor }}">{{ v.noteSub }}</span></span></button>
+      </div>
+      <sc-if value="{{ v.noteOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:8px 16px 0"><textarea value="{{ v.note }}" onChange="{{ setNote }}" placeholder="{{ t.notePh }}" rows="3" style="width:100%;border-radius:14px;border:1px solid #e3e7ec;background:#ffffff;padding:12px 14px;font-family:inherit;font-size:15px;color:#0a1b36;resize:none;outline:none"></textarea></div>
+      </sc-if>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:0;height:100px;background:#ffffff;border-top:1px solid #eef0f3;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 16px 0 24px;z-index:10">
+      <div style="display:flex;flex-direction:column;gap:1px;padding-top:4px;min-width:0"><span style="font-size:20px;font-weight:700;letter-spacing:-.02em;color:#0a6f8a">{{ v.earned }}</span><span style="font-size:13px;color:#8a96a8">{{ v.breakdown }}</span></div>
+      <button onClick="{{ saveVisit }}" style="height:52px;padding:0 20px;border-radius:14px;background:#0a2a5c;color:#fff;border:0;display:flex;align-items:center;gap:8px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;flex-shrink:0"><i class="ph-bold ph-check" style="font-size:16px"></i>{{ t.saveVisit }}</button>
+    </div>
+    </sc-if>
+
+    <!-- VISIT SAVED -->
+    <sc-if value="{{ is.saved }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Visit saved" style="position:absolute;inset:0;background:#0a2a5c;color:#fff;display:flex;flex-direction:column;padding:96px 24px 36px">
+      <div style="display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+        <i class="ph-fill ph-check-circle" style="font-size:52px;color:#7fd6a6"></i>
+        <span style="font-size:17px;font-weight:600;color:#b9c8de">{{ s.title }}</span>
+      </div>
+      <div style="margin-top:16px;display:flex;flex-direction:column"><span style="font-size:60px;font-weight:800;letter-spacing:-.04em;line-height:1.05">{{ s.net }}</span><span style="font-size:17px;font-weight:500;color:#b9c8de">{{ t.earnedVisit }}</span></div>
+      <div style="margin-top:28px;display:flex;flex-direction:column">
+        <div style="height:52px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px dashed #ffffff2e"><span style="font-size:15px;color:#b9c8de;display:flex;align-items:center;gap:8px"><i class="ph ph-receipt" style="font-size:18px"></i>{{ t.fee }}</span><span style="font-size:17px;font-weight:700">{{ s.fee }}</span></div>
+        <div style="height:52px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px dashed #ffffff2e"><span style="font-size:15px;color:#b9c8de;display:flex;align-items:center;gap:8px"><i class="ph ph-flask" style="font-size:18px"></i>{{ t.chems }}</span><span style="font-size:17px;font-weight:700;color:#ffc2b3">{{ s.chem }}</span></div>
+        <div style="height:52px;display:flex;align-items:center;justify-content:space-between"><span style="font-size:15px;color:#b9c8de;display:flex;align-items:center;gap:8px"><i class="ph ph-timer" style="font-size:18px"></i>{{ t.timeOnSite }}</span><span style="font-size:17px;font-weight:700">{{ s.mins }}</span></div>
+      </div>
+      <div style="margin-top:auto;display:flex;flex-direction:column;gap:12px">
+        <span style="font-size:16px;font-weight:600;display:flex;align-items:center;gap:8px"><i class="ph ph-navigation-arrow" style="font-size:17px"></i>{{ s.nextLabel }}</span>
+        <div style="height:6px;border-radius:3px;background:#ffffff26;overflow:hidden"><div style="width:{{ s.bar }};height:100%;border-radius:3px;background:#ffffff;transition:width 1s linear"></div></div>
+        <span style="font-size:14px;color:#b9c8de">{{ s.countText }}</span>
+        <div style="display:flex;gap:8px;margin-top:4px">
+          <button onClick="{{ stayHere }}" style="flex:1;height:52px;border-radius:14px;background:#ffffff1f;border:0;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer">{{ t.stay }}</button>
+          <button onClick="{{ finishSaved }}" style="flex:1.4;height:52px;border-radius:14px;background:#fff;color:#0a2a5c;border:0;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer">{{ t.goNow }}</button>
+        </div>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- POOLS -->
+    <sc-if value="{{ is.pools }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Pools" style="position:absolute;top:50px;left:0;right:0;bottom:84px;overflow-y:auto;scrollbar-width:none;padding-bottom:24px">
+      <div style="padding:22px 24px 0;display:flex;justify-content:space-between;align-items:flex-start">
+        <span style="font-size:48px;font-weight:800;letter-spacing:-.04em;line-height:1">{{ t.pools }}</span>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span style="font-size:17px;font-weight:500;color:#8a96a8">{{ poolsCount }}</span>
+          <button onClick="{{ goAccount }}" aria-label="Account" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:14px;font-weight:700;color:#0a1b36;cursor:pointer">{{ initials }}</button>
+        </div>
+      </div>
+      <div style="margin:20px 16px 0;height:48px;border-radius:14px;background:#f2f4f7;display:flex;align-items:center;gap:10px;padding:0 14px"><i class="ph ph-magnifying-glass" style="font-size:19px;color:#8a96a8"></i><input value="{{ search }}" onChange="{{ setSearch }}" placeholder="{{ t.search }}" aria-label="{{ t.search }}" style="flex:1;min-width:0;height:100%;border:0;background:none;font-family:inherit;font-size:16px;color:#0a1b36;outline:none"></div>
+      <div style="padding:8px 24px 0">
+        <sc-for list="{{ poolRows }}" as="p" hint-placeholder-count="6">
+          <div onClick="{{ p.onClick }}" style="display:flex;align-items:center;gap:14px;min-height:64px;border-top:{{ p.divider }};cursor:pointer">
+            <span style="width:40px;height:40px;flex-shrink:0;border-radius:50%;background:#f2f4f7;color:#0a1b36;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">{{ p.initials }}</span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column"><span style="font-size:16px;font-weight:500">{{ p.name }}</span><span style="font-size:13px;color:#8a96a8">{{ p.addr }}</span></div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px">
+              <sc-if value="{{ p.hasFlag }}" hint-placeholder-val="{{ false }}"><span style="height:22px;padding:0 8px;border-radius:6px;background:{{ p.flagBg }};color:{{ p.flagColor }};display:flex;align-items:center;font-size:12px;font-weight:700">{{ p.flag }}</span></sc-if>
+              <span style="font-size:12px;color:#b3bcc9">{{ p.last }}</span>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noPools }}" hint-placeholder-val="{{ false }}"><div style="min-height:64px;display:flex;align-items:center;font-size:15px;color:#8a96a8">{{ t.noPools }}</div></sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- POOL DETAIL -->
+    <sc-if value="{{ is.pool }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Pool detail" style="position:absolute;top:50px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding-bottom:40px">
+      <div style="padding:8px 16px 0"><button onClick="{{ back }}" aria-label="{{ t.back }}" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;color:#0a1b36;cursor:pointer"><i class="ph-bold ph-arrow-left" style="font-size:17px"></i></button></div>
+      <div style="padding:16px 24px 0;display:flex;flex-direction:column;gap:4px"><span style="font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1">{{ pd.name }}</span><span style="font-size:15px;color:#8a96a8">{{ pd.addr }}</span></div>
+      <div style="padding:14px 24px 0;display:flex;flex-wrap:wrap;gap:6px">
+        <sc-for list="{{ pd.chips }}" as="c" hint-placeholder-count="4"><span style="height:30px;padding:0 12px;border-radius:999px;background:#f2f4f7;display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600"><i class="{{ c.iconCls }}" style="font-size:14px;color:#5b6b82"></i>{{ c.label }}</span></sc-for>
+      </div>
+      <div style="margin:20px 16px 0;border-radius:22px;background:#0a2a5c;color:#fff;padding:18px;display:flex;justify-content:space-between;align-items:flex-end">
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:13px;font-weight:600;color:#b9c8de;display:flex;align-items:center;gap:6px"><i class="ph ph-chart-line-up" style="font-size:15px"></i>{{ t.marginMonth }}</span><span style="font-size:32px;font-weight:800;letter-spacing:-.03em">{{ pd.marginAmt }}</span><span style="font-size:13px;color:#b9c8de">{{ pd.visitsLabel }}</span></div>
+        <span style="height:32px;padding:0 12px;border-radius:999px;background:#ffffff1f;display:flex;align-items:center;font-size:15px;font-weight:700">{{ pd.marginPct }}</span>
+      </div>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 12px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-drop-half" style="font-size:19px;color:#0a6f8a"></i>{{ t.lastReadings }}</span><span style="font-size:13px;color:#b3bcc9">{{ pd.lastDate }}</span></div>
+      <div style="padding:0 16px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+        <sc-for list="{{ pd.readings }}" as="r" hint-placeholder-count="4">
+          <div style="border-radius:16px;background:{{ r.tileBg }};padding:12px 14px;display:flex;flex-direction:column;gap:2px"><span style="font-size:13px;font-weight:600;color:#5b6b82">{{ r.label }}</span><span style="display:flex;align-items:baseline;gap:8px"><span style="font-size:22px;font-weight:700">{{ r.value }}</span><span style="font-size:13px;font-weight:700;color:{{ r.color }}">{{ r.state }}</span></span></div>
+        </sc-for>
+      </div>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 4px"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-clock-counter-clockwise" style="font-size:19px;color:#0a6f8a"></i>{{ t.history }}</span></div>
+      <div style="padding:0 24px">
+        <sc-for list="{{ pd.history }}" as="h" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;justify-content:space-between;min-height:56px;border-top:{{ h.divider }}"><div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:500">{{ h.date }}</span><span style="font-size:13px;color:#8a96a8">{{ h.sub }}</span></div><span style="font-size:15px;font-weight:700;color:#0f5c3b">{{ h.net }}</span></div>
+        </sc-for>
+      </div>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 0;display:flex;flex-direction:column;gap:8px">
+        <span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-note" style="font-size:19px;color:#0a6f8a"></i>{{ t.notes }}</span>
+        <span style="font-size:15px;line-height:1.5;color:#34496a">{{ pd.note }}</span>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- MONEY -->
+    <sc-if value="{{ is.money }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Money" style="position:absolute;top:50px;left:0;right:0;bottom:84px;overflow-y:auto;scrollbar-width:none;padding-bottom:24px">
+      <div style="padding:22px 24px 0;display:flex;justify-content:space-between;align-items:flex-start">
+        <span style="font-size:48px;font-weight:800;letter-spacing:-.04em;line-height:1">{{ t.money }}</span>
+        <button onClick="{{ goAccount }}" aria-label="Account" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;font-family:inherit;font-size:14px;font-weight:700;color:#0a1b36;cursor:pointer">{{ initials }}</button>
+      </div>
+      <div style="margin:20px 16px 0;height:44px;border-radius:999px;background:#f2f4f7;padding:4px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px">
+        <sc-for list="{{ ranges }}" as="r" hint-placeholder-count="3"><button onClick="{{ r.onClick }}" aria-pressed="{{ r.on }}" style="border-radius:999px;border:0;background:{{ r.bg }};color:{{ r.color }};font-family:inherit;font-size:14px;font-weight:700;cursor:pointer">{{ r.label }}</button></sc-for>
+      </div>
+      <div style="margin:16px 16px 0;border-radius:22px;background:#0a2a5c;color:#fff;padding:18px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:13px;font-weight:600;color:#b9c8de;display:flex;align-items:center;gap:6px"><i class="ph ph-wallet" style="font-size:15px"></i>{{ m.netLabel }}</span><span style="font-size:40px;font-weight:800;letter-spacing:-.04em">{{ m.net }}</span></div>
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border-top:1px solid #ffffff1f;padding-top:14px">
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#b9c8de">{{ t.revenue }}</span><span style="font-size:16px;font-weight:700">{{ m.rev }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#b9c8de">{{ t.chems }}</span><span style="font-size:16px;font-weight:700;color:#ffc2b3">{{ m.chem }}</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:12px;font-weight:600;color:#b9c8de">{{ t.other }}</span><span style="font-size:16px;font-weight:700;color:#ffc2b3">{{ m.other }}</span></div>
+        </div>
+      </div>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 4px"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-receipt" style="font-size:19px;color:#0a6f8a"></i>{{ t.costs }}</span></div>
+      <div style="padding:0 24px">
+        <sc-for list="{{ costGroups }}" as="g" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:14px;min-height:56px;border-top:{{ g.divider }}"><i class="{{ g.iconCls }}" style="font-size:22px;color:#a3adbb"></i><div style="flex:1;min-width:0;display:flex;flex-direction:column"><span style="font-size:16px;font-weight:500">{{ g.label }}</span><sc-if value="{{ g.hasSub }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#8a96a8">{{ g.sub }}</span></sc-if></div><span style="font-size:15px;font-weight:700;color:{{ g.color }}">{{ g.amount }}</span></div>
+        </sc-for>
+      </div>
+      <button onClick="{{ goShopping }}" style="margin:12px 16px 0;width:calc(100% - 32px);min-height:64px;background:#fdece8;border:0;border-radius:18px;padding:10px 16px;display:flex;align-items:center;gap:12px;font-family:inherit;color:#9a2f17;cursor:pointer;text-align:left">
+        <span style="width:40px;height:40px;border-radius:50%;background:#b8391d;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="ph ph-shopping-cart-simple" style="font-size:19px"></i></span>
+        <span style="flex:1;display:flex;flex-direction:column"><span style="font-size:15px;font-weight:700">{{ t.shopping }}</span><span style="font-size:13px;font-weight:500">{{ shopRowLabel }}</span></span><i class="ph-bold ph-caret-right" style="font-size:16px"></i>
+      </button>
+
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 4px"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-trend-down" style="font-size:19px;color:#0a6f8a"></i>{{ t.lowest }}</span></div>
+      <div style="padding:0 24px">
+        <sc-for list="{{ lowest }}" as="l" hint-placeholder-count="2">
+          <div onClick="{{ l.onClick }}" style="display:flex;align-items:center;justify-content:space-between;min-height:56px;border-top:{{ l.divider }};cursor:pointer"><div style="display:flex;flex-direction:column"><span style="font-size:16px;font-weight:500">{{ l.name }}</span><span style="font-size:13px;color:#8a96a8">{{ l.sub }}</span></div><span style="font-size:15px;font-weight:700;color:#9a2f17">{{ l.pct }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- SHOPPING -->
+    <sc-if value="{{ is.shopping }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Shopping list" style="position:absolute;top:50px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding-bottom:120px">
+      <div style="padding:8px 16px 0"><button onClick="{{ back }}" aria-label="{{ t.back }}" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;color:#0a1b36;cursor:pointer"><i class="ph-bold ph-arrow-left" style="font-size:17px"></i></button></div>
+      <div style="padding:16px 24px 0;display:flex;flex-direction:column;gap:4px"><span style="font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1">{{ t.shopping }}</span><span style="font-size:15px;color:#8a96a8">{{ shopSub }}</span></div>
+      <div style="margin:16px 16px 0;border-radius:14px;background:#f4f6f8;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.45;color:#34496a"><i class="ph ph-info" style="font-size:18px;color:#0a6f8a;flex-shrink:0;margin-top:1px"></i><span style="text-wrap:pretty">{{ t.shopInfo }}</span></div>
+      <div style="padding:10px 24px 0">
+        <sc-for list="{{ shopItems }}" as="it" hint-placeholder-count="6">
+          <button onClick="{{ it.onClick }}" aria-pressed="{{ it.checked }}" style="width:100%;display:flex;align-items:center;gap:14px;min-height:60px;border:0;border-top:{{ it.divider }};background:none;font-family:inherit;color:#0a1b36;cursor:pointer;text-align:left;padding:0">
+            <span style="width:24px;height:24px;flex-shrink:0;border-radius:7px;background:{{ it.boxBg }};border:1.5px {{ it.boxStyle }} {{ it.boxBorder }};color:#fff;display:flex;align-items:center;justify-content:center"><i class="{{ it.checkCls }}" style="font-size:13px"></i></span>
+            <span style="flex:1;min-width:0;display:flex;flex-direction:column"><span style="font-size:16px;font-weight:500;color:{{ it.color }};text-decoration:{{ it.deco }}">{{ it.name }}</span><span style="font-size:13px;color:#8a96a8">{{ it.qty }}</span></span>
+            <span style="font-size:15px;font-weight:700">{{ it.cost }}</span>
+          </button>
+        </sc-for>
+        <sc-if value="{{ shopEmpty }}" hint-placeholder-val="{{ false }}"><div style="min-height:64px;display:flex;align-items:center;gap:8px;font-size:15px;font-weight:600;color:#0f5c3b"><i class="ph-fill ph-check-circle" style="font-size:20px"></i>{{ t.allBought }}</div></sc-if>
+      </div>
+    </div>
+    <sc-if value="{{ shopHasChecked }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;bottom:0;height:100px;background:#ffffff;border-top:1px solid #eef0f3;padding:14px 16px 0;z-index:10">
+        <button onClick="{{ markBought }}" style="width:100%;height:52px;border-radius:14px;border:0;background:#0a2a5c;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer"><i class="ph-bold ph-check" style="font-size:16px"></i>{{ markLabel }}</button>
+      </div>
+    </sc-if>
+    </sc-if>
+
+    <!-- ACCOUNT -->
+    <sc-if value="{{ is.account }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Account" style="position:absolute;top:50px;left:0;right:0;bottom:0;overflow-y:auto;scrollbar-width:none;padding-bottom:40px">
+      <div style="padding:8px 16px 0"><button onClick="{{ back }}" aria-label="{{ t.back }}" style="width:40px;height:40px;border-radius:50%;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;color:#0a1b36;cursor:pointer"><i class="ph-bold ph-arrow-left" style="font-size:17px"></i></button></div>
+      <div style="padding:16px 24px 0"><span style="font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1">{{ t.account }}</span></div>
+      <div style="padding:10px 24px 0">
+        <div style="min-height:60px;display:flex;align-items:center;gap:14px"><i class="ph ph-storefront" style="font-size:22px;color:#a3adbb"></i><span style="display:flex;flex-direction:column"><span style="font-size:13px;color:#8a96a8">{{ t.business }}</span><span style="font-size:16px;font-weight:500">{{ biz }}</span></span></div>
+        <div style="min-height:60px;display:flex;align-items:center;gap:14px;border-top:1px dashed #e3e7ec"><i class="ph ph-user" style="font-size:22px;color:#a3adbb"></i><span style="display:flex;flex-direction:column"><span style="font-size:13px;color:#8a96a8">{{ t.owner }}</span><span style="font-size:16px;font-weight:500">{{ owner }}</span></span></div>
+        <div style="min-height:60px;display:flex;align-items:center;gap:14px;border-top:1px dashed #e3e7ec"><i class="ph ph-currency-dollar" style="font-size:22px;color:#a3adbb"></i><span style="display:flex;flex-direction:column"><span style="font-size:13px;color:#8a96a8">{{ t.defaultFee }}</span><span style="font-size:16px;font-weight:500">{{ feeLabel }}</span></span></div>
+      </div>
+      <div style="height:8px;background:#f4f6f8;margin-top:20px"></div>
+      <div style="padding:22px 24px 12px"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-translate" style="font-size:19px;color:#0a6f8a"></i>{{ t.language }}</span></div>
+      <div style="margin:0 16px;height:48px;border-radius:999px;background:#f2f4f7;padding:4px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
+        <sc-for list="{{ langOptions }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.onClick }}" aria-pressed="{{ o.on }}" style="border-radius:999px;border:0;background:{{ o.bg }};color:{{ o.color }};font-family:inherit;font-size:15px;font-weight:700;cursor:pointer">{{ o.label }}</button></sc-for>
+      </div>
+      <div style="height:8px;background:#f4f6f8;margin-top:24px"></div>
+      <div style="padding:22px 24px 4px"><span style="font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px"><i class="ph ph-rocket-launch" style="font-size:19px;color:#0a6f8a"></i>{{ t.comingSoon }}</span></div>
+      <div style="padding:0 24px">
+        <sc-for list="{{ soonRows }}" as="r" hint-placeholder-count="5">
+          <button onClick="{{ r.onClick }}" style="width:100%;min-height:54px;display:flex;align-items:center;gap:14px;border:0;border-top:{{ r.divider }};background:none;font-family:inherit;color:#0a1b36;cursor:pointer;padding:0;text-align:left"><i class="{{ r.iconCls }}" style="font-size:22px;color:#a3adbb"></i><span style="flex:1;font-size:16px;font-weight:500">{{ r.label }}</span><i class="ph ph-caret-right" style="font-size:16px;color:#b3bcc9"></i></button>
+        </sc-for>
+      </div>
+      <div style="height:8px;background:#f4f6f8;margin-top:16px"></div>
+      <div style="padding:12px 24px 0;display:flex;justify-content:space-between;align-items:center">
+        <button onClick="{{ restartOb }}" style="height:44px;background:none;border:0;padding:0;font-family:inherit;font-size:15px;font-weight:600;color:#0a6f8a;cursor:pointer;display:flex;align-items:center;gap:6px"><i class="ph ph-arrow-counter-clockwise" style="font-size:17px"></i>{{ t.restartOb }}</button>
+        <span style="font-size:15px;font-weight:600;color:#8a96a8;display:flex;align-items:center;gap:6px"><i class="ph ph-sign-out" style="font-size:17px"></i>{{ t.signOut }}</span>
+      </div>
+    </div>
+    </sc-if>
+
+    <!-- ONBOARDING -->
+    <sc-if value="{{ is.ob }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Onboarding" style="position:absolute;top:50px;left:0;right:0;bottom:100px;overflow-y:auto;scrollbar-width:none;padding-bottom:24px">
+      <div style="padding:16px 24px 0;display:flex;flex-direction:column;gap:10px">
+        <span style="font-size:13px;font-weight:600;color:#8a96a8">{{ ob.stepLabel }}</span>
+        <div style="display:flex;gap:6px"><sc-for list="{{ ob.bars }}" as="b" hint-placeholder-count="3"><span style="flex:1;height:4px;border-radius:2px;background:{{ b.bg }}"></span></sc-for></div>
+      </div>
+      <div style="padding:28px 24px 0;display:flex;flex-direction:column;gap:6px"><span style="font-size:30px;font-weight:800;letter-spacing:-.03em;line-height:1.1;text-wrap:pretty">{{ ob.title }}</span><span style="font-size:15px;line-height:1.45;color:#8a96a8">{{ ob.sub }}</span></div>
+
+      <sc-if value="{{ is.ob1 }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:24px 16px 0;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;font-weight:600;padding-left:8px">{{ t.language }}</span>
+            <div style="height:48px;border-radius:999px;background:#f2f4f7;padding:4px;display:grid;grid-template-columns:1fr 1fr;gap:4px">
+              <sc-for list="{{ langOptions }}" as="o" hint-placeholder-count="2"><button onClick="{{ o.onClick }}" aria-pressed="{{ o.on }}" style="border-radius:999px;border:0;background:{{ o.bg }};color:{{ o.color }};font-family:inherit;font-size:15px;font-weight:700;cursor:pointer">{{ o.label }}</button></sc-for>
+            </div>
+          </div>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;font-weight:600;padding-left:8px">{{ t.bizName }}</span><span style="height:54px;border-radius:14px;background:#f2f4f7;display:flex;align-items:center;gap:10px;padding:0 16px"><i class="ph ph-storefront" style="font-size:20px;color:#8a96a8"></i><input value="{{ biz }}" onChange="{{ setBiz }}" style="flex:1;min-width:0;height:100%;border:0;background:none;font-family:inherit;font-size:17px;font-weight:600;color:#0a1b36;outline:none"></span></label>
+          <label style="display:flex;flex-direction:column;gap:8px"><span style="font-size:14px;font-weight:600;padding-left:8px">{{ t.yourName }}</span><span style="height:54px;border-radius:14px;background:#f2f4f7;display:flex;align-items:center;gap:10px;padding:0 16px"><i class="ph ph-user" style="font-size:20px;color:#8a96a8"></i><input value="{{ owner }}" onChange="{{ setOwner }}" style="flex:1;min-width:0;height:100%;border:0;background:none;font-family:inherit;font-size:17px;font-weight:600;color:#0a1b36;outline:none"></span></label>
+        </div>
+      </sc-if>
+      <sc-if value="{{ is.ob2 }}" hint-placeholder-val="{{ false }}">
+        <div style="margin:28px 16px 0;border-radius:22px;background:#f4f6f8;padding:28px 18px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="display:flex;align-items:center;gap:18px">
+            <button onClick="{{ feeDown }}" aria-label="Lower fee" style="width:56px;height:56px;border-radius:50%;background:#ffffff;border:0;display:flex;align-items:center;justify-content:center;color:#0a1b36;cursor:pointer"><i class="ph-bold ph-minus" style="font-size:20px"></i></button>
+            <span style="min-width: 130px; text-align: center; font-size: 48px; font-weight: 800; letter-spacing: -.04em">{{ obFee }}</span>
+            <button onClick="{{ feeUp }}" aria-label="Raise fee" style="width:56px;height:56px;border-radius:50%;background:#ffffff;border:0;display:flex;align-items:center;justify-content:center;color:#0a1b36;cursor:pointer"><i class="ph-bold ph-plus" style="font-size:20px"></i></button>
+          </div>
+          <span style="font-size:15px;color:#8a96a8">{{ t.perVisit }}</span>
+        </div>
+        <div style="margin:12px 16px 0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px">
+          <sc-for list="{{ feeChips }}" as="f" hint-placeholder-count="4"><button onClick="{{ f.onClick }}" style="height:46px;border-radius:999px;border:0;background:{{ f.bg }};color:{{ f.color }};font-family:inherit;font-size:15px;font-weight:700;cursor:pointer">{{ f.label }}</button></sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ is.ob3 }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:16px 24px 0">
+          <sc-for list="{{ obPools }}" as="p" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:14px;min-height:64px;border-top:{{ p.divider }}">
+              <span style="width:40px;height:40px;flex-shrink:0;border-radius:50%;background:#f2f4f7;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700">{{ p.initials }}</span>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column"><span style="font-size:16px;font-weight:500">{{ p.name }}</span><span style="font-size:13px;color:#8a96a8">{{ p.addr }}</span></div>
+              <span style="font-size:15px;font-weight:700">{{ p.fee }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="padding:12px 16px 0;display:flex;flex-direction:column;gap:8px">
+          <button onClick="{{ addPoolDemo }}" style="height:52px;border-radius:14px;border:1.5px dashed #c9d0da;background:none;color:#34496a;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer"><i class="ph-bold ph-plus" style="font-size:15px"></i>{{ t.addPool }}</button>
+          <button onClick="{{ openImport }}" style="min-height:56px;border-radius:14px;border:0;background:#f4f6f8;display:flex;align-items:center;gap:12px;padding:0 16px;font-family:inherit;color:#0a1b36;cursor:pointer;text-align:left"><i class="ph ph-download-simple" style="font-size:20px;color:#5b6b82"></i><span style="flex:1;font-size:15px;font-weight:600">{{ t.importApp }}</span><span style="height:24px;padding:0 10px;border-radius:999px;background:#e6eaef;color:#5b6b82;display:flex;align-items:center;font-size:12px;font-weight:700">{{ t.comingSoon }}</span></button>
+        </div>
+      </sc-if>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:0;height:100px;background:#ffffff;border-top:1px solid #eef0f3;display:flex;gap:8px;padding:14px 16px 0;z-index:10">
+      <sc-if value="{{ ob.hasBack }}" hint-placeholder-val="{{ false }}"><button onClick="{{ obBack }}" aria-label="{{ t.back }}" style="width:52px;height:52px;flex-shrink:0;border-radius:14px;background:#f2f4f7;border:0;display:flex;align-items:center;justify-content:center;color:#0a1b36;cursor:pointer"><i class="ph-bold ph-arrow-left" style="font-size:18px"></i></button></sc-if>
+      <button onClick="{{ obNext }}" style="flex:1;height:52px;border-radius:14px;border:0;background:#0a2a5c;color:#fff;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer">{{ ob.cta }}<i class="ph-bold ph-arrow-right" style="font-size:16px"></i></button>
+    </div>
+    </sc-if>
+
+    <!-- TAB BAR -->
+    <sc-if value="{{ is.tabbar }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:84px;background:#ffffff;border-top:1px solid #eef0f3;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:8px 24px 22px;z-index:10">
+      <sc-for list="{{ tabs }}" as="tb" hint-placeholder-count="3"><button onClick="{{ tb.onClick }}" aria-current="{{ tb.current }}" style="border:0;background:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-family:inherit;font-size:12px;font-weight:{{ tb.weight }};color:{{ tb.color }};cursor:pointer"><i class="{{ tb.iconCls }}" style="font-size:26px"></i>{{ tb.label }}</button></sc-for>
+    </div>
+    </sc-if>
+
+    <!-- STATUS BAR -->
+    <div style="position:absolute;top:0;left:0;right:0;height:50px;z-index:20;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 8px 34px;font-size:16px;font-weight:600;background:{{ statusBg }};color:{{ statusColor }};pointer-events:none"><span>9:41</span><i class="ph-fill ph-battery-high" style="font-size:22px"></i></div>
+
+    <!-- SHEETS -->
+    <sc-if value="{{ is.sheet }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeSheet }}" style="position:absolute;inset:0;z-index:30;background:#0a1b3659;display:flex;align-items:flex-end">
+      <div onClick="{{ stopProp }}" style="width:100%;background:#ffffff;border-radius:28px 28px 0 0;padding:10px 16px 34px;display:flex;flex-direction:column;gap:14px">
+        <span style="align-self:center;width:36px;height:5px;border-radius:3px;background:#dde2e8"></span>
+
+        <sc-if value="{{ is.sheetAdd }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:22px;font-weight:800;letter-spacing:-.02em;padding:4px 8px 0">{{ t.addAStop }}</span>
+          <div style="padding:0 8px">
+            <sc-for list="{{ addTypes }}" as="a" hint-placeholder-count="3">
+              <button onClick="{{ a.onClick }}" style="width:100%;min-height:64px;background:none;border:0;border-top:{{ a.divider }};display:flex;align-items:center;gap:14px;padding:0;font-family:inherit;color:#0a1b36;cursor:pointer;text-align:left">
+                <span style="width:40px;height:40px;flex-shrink:0;border-radius:50%;background:#fdf3dd;color:#c98a12;display:flex;align-items:center;justify-content:center"><i class="{{ a.iconCls }}" style="font-size:20px"></i></span>
+                <span style="flex:1;display:flex;flex-direction:column"><span style="font-size:16px;font-weight:600">{{ a.label }}</span><span style="font-size:13px;color:#8a96a8">{{ a.sub }}</span></span>
+                <i class="ph ph-caret-right" style="font-size:16px;color:#b3bcc9"></i>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ is.sheetCost }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:2px;padding:4px 8px 0"><span style="font-size:22px;font-weight:800;letter-spacing:-.02em">{{ cs.title }}</span><span style="font-size:14px;color:#8a96a8">{{ t.costOpt }}</span></div>
+          <div style="height:64px;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:800;letter-spacing:-.04em;color:{{ cs.color }}">{{ cs.amount }}</div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+            <sc-for list="{{ keys }}" as="k" hint-placeholder-count="12"><button onClick="{{ k.onClick }}" aria-label="{{ k.k }}" style="height:52px;border-radius:14px;background:#f2f4f7;border:0;font-family:inherit;font-size:21px;font-weight:600;color:#0a1b36;cursor:pointer">{{ k.k }}</button></sc-for>
+          </div>
+          <button onClick="{{ confirmCost }}" style="height:52px;border-radius:14px;border:0;background:#0a2a5c;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer">{{ cs.confirm }}</button>
+        </sc-if>
+
+        <sc-if value="{{ is.sheetChem }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:22px;font-weight:800;letter-spacing:-.02em;padding:4px 8px 0">{{ t.addChem }}</span>
+          <div style="padding:0 8px">
+            <sc-for list="{{ chemOptions }}" as="c" hint-placeholder-count="3">
+              <button onClick="{{ c.onClick }}" style="width:100%;min-height:56px;background:none;border:0;border-top:{{ c.divider }};display:flex;align-items:center;gap:14px;padding:0;font-family:inherit;color:#0a1b36;cursor:pointer;text-align:left"><i class="ph ph-flask" style="font-size:20px;color:#a3adbb"></i><span style="flex:1;font-size:16px;font-weight:500">{{ c.name }}</span><span style="font-size:14px;color:#8a96a8">{{ c.price }}</span></button>
+            </sc-for>
+            <sc-if value="{{ noChemOptions }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;color:#8a96a8">{{ t.allChemsAdded }}</span></sc-if>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ is.sheetSoon }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;gap:10px;padding:4px 8px 0">
+            <span style="align-self:flex-start;height:24px;padding:0 10px;border-radius:999px;background:#f2f4f7;color:#5b6b82;display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700"><i class="ph ph-rocket-launch" style="font-size:13px"></i>{{ t.comingSoon }}</span>
+            <span style="font-size:22px;font-weight:800;letter-spacing:-.02em">{{ soonTitle }}</span>
+            <span style="font-size:15px;line-height:1.45;color:#5b6b82">{{ t.soonBody }}</span>
+          </div>
+          <button onClick="{{ closeSheet }}" style="height:52px;border-radius:14px;border:0;background:#0a2a5c;color:#fff;font-family:inherit;font-size:16px;font-weight:700;cursor:pointer">{{ t.gotIt }}</button>
+        </sc-if>
+      </div>
+    </div>
+    </sc-if>
+
+    <sc-if value="{{ is.toast }}" hint-placeholder-val="{{ false }}">
+      <div role="status" style="position:absolute;top:58px;left:50%;transform:translateX(-50%);z-index:40;height:40px;padding:0 16px;border-radius:999px;background:#0a1b36;color:#fff;display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;white-space:nowrap"><i class="ph-fill ph-check-circle" style="font-size:17px;color:#7fd6a6"></i>{{ toast }}</div>
+    </sc-if>
+  </div>
+  <div style="display:flex;gap:18px">
+    <button onClick="{{ resetDemo }}" style="background:none;border:0;padding:8px;font-family:inherit;font-size:14px;font-weight:600;color:#0a6f8a;cursor:pointer">Reset demo</button>
+    <button onClick="{{ restartOb }}" style="background:none;border:0;padding:8px;font-family:inherit;font-size:14px;font-weight:600;color:#0a6f8a;cursor:pointer">Show onboarding</button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;today&quot;,&quot;onboarding&quot;],&quot;default&quot;:&quot;today&quot;,&quot;tsType&quot;:&quot;'today'|'onboarding'&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;language&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;en&quot;,&quot;es&quot;],&quot;default&quot;:&quot;en&quot;,&quot;tsType&quot;:&quot;'en'|'es'&quot;,&quot;section&quot;:&quot;Demo&quot;},&quot;countdown&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:2,&quot;max&quot;:6,&quot;step&quot;:1,&quot;unit&quot;:&quot;s&quot;,&quot;default&quot;:3,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Demo&quot;}}">
+const S={
+ today:['Today','Hoy'],earned:['Earned','Ganado'],stops:['Stops','Paradas'],shopping:['Shopping list','Lista de compras'],
+ startVisit:['Start visit','Iniciar visita'],route:['Route','Ruta'],stopShort:['Stop','Parada'],toBuy:['to buy','por comprar'],
+ completed:['Completed','Completadas'],nonPool:['Non-pool','Otra parada'],markDone:['Mark done','Marcar hecha'],stopHint:['Add what you spent, or skip it.','Agrega lo que gastaste, o sáltalo.'],
+ routeDone:['Route done','Ruta terminada'],seeMoney:['See money','Ver dinero'],earnedTodayFull:['earned today','ganado hoy'],
+ pools:['Pools','Piscinas'],money:['Money','Dinero'],
+ readings:['Readings','Lecturas'],chems:['Chems','Químicos'],add:['Add','Agregar'],tasks:['Tasks','Tareas'],done:['done','hechas'],
+ forCustomer:['For the customer','Para el cliente'],sentWithReport:['Sent with the visit report','Se envía con el reporte de visita'],
+ addPhoto:['Add photo','Agregar foto'],photoAdded:['Photo added','Foto agregada'],photoSub:['Pool after service','Piscina después del servicio'],tapRemove:['Tap to remove','Toca para quitar'],
+ writeNote:['Write note','Escribir nota'],noteAdded:['Note added','Nota agregada'],noteSub:['Anything they should know','Algo que deban saber'],tapEdit:['Tap to edit','Toca para editar'],
+ notePh:['Write a note for the customer','Escribe una nota para el cliente'],
+ saveVisit:['Save visit','Guardar visita'],visitSaved:['Visit saved','Visita guardada'],earnedVisit:['earned this visit','ganado en esta visita'],
+ fee:['Fee','Tarifa'],timeOnSite:['Time on site','Tiempo en sitio'],stay:['Stay here','Quedarme'],goNow:['Back to Today','Ir a Hoy'],
+ addAStop:['Add a stop','Agregar parada'],fuel:['Fuel','Gasolina'],supply:['Supply store','Suministros'],lunch:['Lunch','Almuerzo'],
+ fuelSub:['Gas station','Gasolinera'],supplySub:['Chems or parts','Químicos o repuestos'],lunchSub:['Break','Descanso'],
+ costOpt:['Cost (optional)','Costo (opcional)'],addChem:['Add a chem','Agregar químico'],allChemsAdded:['All chems are already on this visit.','Todos los químicos ya están en esta visita.'],
+ search:['Search pools','Buscar piscinas'],lastVisit:['Last','Última'],noPools:['No pools match.','Ninguna piscina coincide.'],
+ marginMonth:['Margin this month','Margen este mes'],visits:['visits','visitas'],lastReadings:['Last readings','Últimas lecturas'],history:['Visit history','Historial de visitas'],notes:['Notes','Notas'],monday:['Mondays','Lunes'],gate:['Gate','Portón'],
+ rToday:['Today','Hoy'],rWeek:['7 days','7 días'],rMonth:['October','Octubre'],net:['Net','Neto'],revenue:['Revenue','Ingresos'],other:['Other','Otros'],costs:['Costs','Costos'],
+ lowest:['Lowest margin this month','Menor margen este mes'],restockL:['Chem restock','Reabasto de químicos'],restock:['Not in net, use is counted per visit','Fuera del neto, el uso se cuenta por visita'],
+ shopInfo:["Based on this week's chem use and the rest of today's route.",'Según el uso de químicos de esta semana y el resto de la ruta de hoy.'],markBought:['Mark bought','Marcar comprado'],allBought:['All bought.','Todo comprado.'],
+ account:['Account','Cuenta'],business:['Business','Negocio'],owner:['Owner','Dueño'],defaultFee:['Default fee','Tarifa base'],language:['Language','Idioma'],comingSoon:['Coming soon','Próximamente'],
+ soonBody:["This isn't part of the first version. It's planned for a later release.",'No es parte de la primera versión. Está planeado para más adelante.'],gotIt:['Got it','Entendido'],restartOb:['Restart onboarding','Reiniciar configuración'],signOut:['Sign out','Cerrar sesión'],
+ importApp:['Import from another app','Importar de otra app'],techs:['Technicians','Técnicos'],subscription:['Subscription & trial','Suscripción y prueba'],desktop:['Desktop version','Versión de escritorio'],repairs:['Repair jobs','Reparaciones'],
+ step:['Step','Paso'],of:['of','de'],ob1Title:["Let's set up your business",'Configuremos tu negocio'],ob1Sub:['Takes about a minute.','Toma como un minuto.'],bizName:['Business name','Nombre del negocio'],yourName:['Your name','Tu nombre'],continue:['Continue','Continuar'],
+ ob2Title:['What do you charge per visit?','¿Cuánto cobras por visita?'],ob2Sub:['Your default fee. You can change it per pool later.','Tu tarifa base. Puedes cambiarla por piscina después.'],perVisit:['per visit','por visita'],
+ ob3Title:['Add your first pools','Agrega tus primeras piscinas'],ob3Sub:['We added 3 to get you started. Edit or add more.','Agregamos 3 para empezar. Edítalas o agrega más.'],addPool:['Add pool','Agregar piscina'],startRoute:['Start my route','Empezar mi ruta'],
+ back:['Back','Atrás'],low:['Low','Bajo'],ok:['OK','OK'],high:['High','Alto'],same:['Same as last','Igual que la última'],changed:['Changed · was','Cambió · antes'],added:['Added','Agregado'],
+ boughtToast:['Added to costs','Agregado a costos'],stopAdded:['Stop added','Parada agregada'],demoPools:['Demo: pools are prefilled','Demo: piscinas precargadas'],
+ skim:['Skim surface','Limpiar superficie'],brush:['Brush walls','Cepillar paredes'],vacuum:['Vacuum','Aspirar'],baskets:['Empty baskets','Vaciar canastas'],filter:['Check filter','Revisar filtro'],
+ items:['items','artículos'],from:['From','Del'],dayName:['Monday','Lunes'],monthDay:['October 19','19 de octubre'],nextStop:['Next stop','Siguiente'],onSite:['on site','en sitio'],paused:['Paused','En pausa'],next:['Next','Siguiente']
+};
+const CH={
+ chlor:{n:['Liquid chlorine','Cloro líquido'],u:['gal','gal'],p:4.25,step:0.5},
+ acid:{n:['Muriatic acid','Ácido muriático'],u:['gal','gal'],p:6.20,step:0.5},
+ tabs:{n:['Chlorine tabs','Pastillas de cloro'],u:['tabs','past.'],p:1.10,step:1},
+ cya:{n:['Stabilizer','Estabilizador'],u:['lb','lb'],p:3.50,step:1},
+ soda:{n:['Baking soda','Bicarbonato'],u:['lb','lb'],p:0.90,step:1},
+ clean:{n:['Filter cleaner','Limpiador de filtro'],u:['btl','bot.'],p:6.50,step:1}
+};
+const RG={fc:{l:'FC',min:2,max:4,step:0.5,d:1,lo:0,hi:10},ph:{l:'pH',min:7.2,max:7.6,step:0.1,d:1,lo:6.8,hi:8.4},ta:{l:'TA',min:80,max:120,step:10,d:0,lo:0,hi:240},cya:{l:'CYA',min:30,max:50,step:10,d:0,lo:0,hi:150}};
+const RK=['fc','ph','ta','cya'];
+const TASKS=['skim','brush','vacuum','baskets','filter'];
+const TICON={skim:'waves',brush:'paint-brush-broad',vacuum:'broom',baskets:'basket',filter:'funnel'};
+const SICON={fuel:'gas-pump',supply:'storefront',lunch:'fork-knife'};
+const DATES=[['Oct 12','12 oct'],['Oct 5','5 oct'],['Sep 28','28 sep'],['Sep 21','21 sep']];
+const TODAY=['Today','Hoy'];
+const SC={low:{pill:'#fdf3dd',tile:'#fdf3dd',c:'#6e4800'},high:{pill:'#fdece8',tile:'#fdece8',c:'#9a2f17'},ok:{pill:'transparent',tile:'#e8f5ee',c:'#13734a'}};
+const DASH='1px dashed #e3e7ec';
+const PLACE={fuel:'Shell · SR-312',supply:'Pool supply · US-1',lunch:'Anastasia Blvd'};
+const BASE={today:{rev:0,chem:0,fuel:0,lunch:0,supply:0,visits:0,restock:0},week:{rev:1540,chem:331.85,fuel:96.40,lunch:45.90,supply:0,visits:44,restock:132.40},month:{rev:5810,chem:1263.40,fuel:372.15,lunch:140.60,supply:38.75,visits:166,restock:486.20}};
+const POOLS=[
+ ['p1','Carla Nuñez','14 Ocean Trace Rd','','Open · 12k gal',35,0,[3,7.4,100,40],[['chlor',1]],'Skimmer lid is cracked, replacement ordered.'],
+ ['p2','Dave Whitfield','221 Magnolia Ave','1290','Screened · 18k gal',35,0,[3.5,7.5,110,40],[['chlor',0.5]],'Robot cleaner in the garage if needed.'],
+ ['p3','Priya Shah','9 Lighthouse Ave','','Open · 10k gal',35,0,[2.5,7.4,90,30],[['chlor',1],['acid',0.5]],'Kids swim lessons Tue, keep chlorine steady.'],
+ ['p4','Mark & Jen Ross','305 Arricola Ave','7731','Screened · 20k gal',35,0,[3,7.8,120,40],[['chlor',1],['soda',2]],'pH keeps drifting up, new plaster.'],
+ ['p5','Gloria Bennett','58 Bridge St','','Spa + pool · 14k gal',35,0,[3,7.4,100,40],[['chlor',1.5]],'Check spa jets, one was weak.'],
+ ['p6','Linda Ortega','88 Coquina Ave','4417','Screened · 15k gal',35,0,[1,7.8,90,40],[['chlor',0.5],['acid',0.5]],'Filter pressure high, cleaned cartridge.'],
+ ['p7','Tom Becker','412 Anastasia Blvd','','Open · 16k gal',40,6,[3,7.5,100,40],[['chlor',1]],'Leaves heavy, oak tree by the deep end.'],
+ ['p8','Rachel Kim','27 Marsh Point Rd','0815','Screened · 12k gal',35,11,[2.5,7.4,110,50],[['chlor',0.5],['tabs',2]],'Dog in the yard, close the gate.'],
+ ['p9','Sam Alvarez','140 Old Beach Rd','','Saltwater · 18k gal',45,8,[3.5,7.6,90,60],[['acid',0.5]],'Salt cell due for cleaning.'],
+ ['p10','Beth Carver','6 Sea Grove Ln','2024','Screened · 22k gal',35,5,[1.5,7.3,70,30],[['chlor',1.5],['soda',4]],'Algae spots on the steps last week.'],
+ ['p11','Jorge Medina','77 Coastal Hwy','','Open · 14k gal',40,9,[3,7.4,100,40],[['chlor',1]],'Wants a text after each visit.'],
+ ['p12','Nora Fitz','19 Palm Row','5521','Screened · 11k gal',35,4,[2.5,7.5,90,40],[['chlor',0.5]],'Pump is loud, mention it to the owner.'],
+ ['p13','Ken Ito','3 Vilano Rd','','Open · 25k gal',45,12,[2,7.2,100,40],[['chlor',1.5],['acid',0.5]],'Gate sticks, lift to open.']
+];
+const r2=n=>Math.round(n*100)/100;
+const m2=n=>'$'+r2(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const fq=q=>Number.isInteger(q)?String(q):q.toFixed(1);
+const ini=n=>n.replace('&','').split(' ').filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const inMonth=h=>h.date===TODAY||h.date[0].indexOf('Oct')===0;
+const dv=j=>j?DASH:'0';
+
+class Component extends DCLogic {
+  constructor(props){super(props);this.state=this.fresh();}
+  fresh(){
+    const pr=this.props||{};
+    const pools={};
+    POOLS.forEach((a,i)=>{const [id,name,addr,gate,kind,fee,drive,r,chems,note]=a;
+      pools[id]={id,name,addr,gate,kind,fee,drive,note,last:{fc:r[0],ph:r[1],ta:r[2],cya:r[3]},chems:chems.map(c=>({id:c[0],qty:c[1]})),tasks:{skim:true,brush:true,vacuum:false,baskets:true,filter:true},lastDate:DATES[0],
+        history:DATES.map((d,k)=>{const chem=r2(3.2+((i*1.37+k*2.11)%5.2));return {date:d,fee,chem,net:r2(fee-chem),mins:14+((i+k)%3)*4};})};});
+    const SEED={p1:[28.40,18],p2:[31.15,15],p3:[26.90,22],p4:[29.80,17],p5:[26.35,20]};
+    const order=['p1','p2','p3','p4','p5','p6','p7','fuel','p8','p9','p10','p11','p12','p13'];
+    const stops=order.map((id,i)=>{
+      if(id==='fuel')return {id:'s'+i,type:'fuel',place:PLACE.fuel,done:false,cost:0};
+      const s={id:'s'+i,type:'pool',poolId:id,done:false};
+      if(SEED[id]){const [net,mins]=SEED[id],fee=pools[id].fee,chem=r2(fee-net);Object.assign(s,{done:true,fee,chem,net,mins});pools[id].history.unshift({date:TODAY,fee,chem,net,mins});pools[id].lastDate=TODAY;}
+      return s;});
+    return {screen:pr.startScreen==='onboarding'?'ob1':'today',prev:'today',lang:pr.language==='es'?'es':'en',pools,stops,visit:null,saved:null,count:0,counting:false,sheet:null,cost:{mode:'add',type:'fuel',amt:''},soon:null,showDone:false,
+      shop:[['chlor',18],['acid',4],['tabs',10],['cya',4],['soda',10],['clean',1]].map(([id,qty])=>({id,qty,checked:false})),restock:0,range:'today',poolId:'p6',search:'',biz:'Delgado Pool Care',owner:'Mike Delgado',fee:35,toast:null,now:Date.now()};
+  }
+  componentDidMount(){
+    this.iv=setInterval(()=>{const st=this.state;
+      if(st.screen==='visit')this.setState({now:Date.now()});
+      if(st.screen==='saved'&&st.counting&&st.count>0){const c=st.count-1;this.setState({count:c});
+        if(c===0)this.ft=setTimeout(()=>{if(this.state.screen==='saved'&&this.state.counting)this.finishSaved();},700);}
+    },1000);
+  }
+  componentWillUnmount(){clearInterval(this.iv);clearTimeout(this.ft);clearTimeout(this.tt);}
+  componentDidUpdate(pp){
+    if(pp.language!==this.props.language&&this.props.language)this.setState({lang:this.props.language});
+    if(pp.startScreen!==this.props.startScreen)this.setState({screen:this.props.startScreen==='onboarding'?'ob1':'today',sheet:null});
+  }
+  L(){return this.state.lang==='es'?1:0;}
+  toast(msg){this.setState({toast:msg});clearTimeout(this.tt);this.tt=setTimeout(()=>this.setState({toast:null}),2200);}
+  go=(screen)=>this.setState(st=>({screen,sheet:null,prev:['today','pools','money'].includes(st.screen)?st.screen:st.prev}));
+  back=()=>this.setState(st=>({screen:st.prev||'today'}));
+  openPool=(id)=>this.setState(st=>({poolId:id,screen:'pool',prev:['today','pools','money'].includes(st.screen)?st.screen:st.prev}));
+  startVisit=()=>{const st=this.state,s=st.stops.find(x=>!x.done);if(!s||s.type!=='pool')return;const p=st.pools[s.poolId];
+    this.setState({screen:'visit',now:Date.now(),visit:{stopId:s.id,poolId:p.id,r:{...p.last},chems:p.chems.map(c=>({id:c.id,qty:c.qty,prev:c.qty})),tasks:{...p.tasks},photo:false,note:'',noteOpen:false,start:Date.now()}});};
+  upd(fn){this.setState(st=>({visit:fn({...st.visit})}));}
+  reading(k,dir){this.upd(v=>{const g=RG[k];let x=Math.round((v.r[k]+dir*g.step)*10)/10;x=Math.min(g.hi,Math.max(g.lo,x));v.r={...v.r,[k]:x};return v;});}
+  chem(i,dir){this.upd(v=>{v.chems=v.chems.map((c,j)=>j===i?{...c,qty:Math.max(0,Math.round((c.qty+dir*CH[c.id].step)*10)/10)}:c);return v;});}
+  saveVisit=()=>{const st=this.state,v=st.visit,p=st.pools[v.poolId],fee=p.fee;
+    const chem=r2(v.chems.reduce((a,c)=>a+c.qty*CH[c.id].p,0)),net=r2(fee-chem),mins=Math.max(1,Math.round((Date.now()-v.start)/60000));
+    const stops=st.stops.map(s=>s.id===v.stopId?{...s,done:true,fee,chem,net,mins}:s);
+    const np={...p,last:{...v.r},chems:v.chems.filter(c=>c.qty>0).map(c=>({id:c.id,qty:c.qty})),tasks:{...v.tasks},lastDate:TODAY,note:v.note||p.note,history:[{date:TODAY,fee,chem,net,mins},...p.history]};
+    const nx=stops.find(s=>!s.done);
+    this.setState({stops,pools:{...st.pools,[p.id]:np},screen:'saved',saved:{name:p.name,fee,chem,net,mins,nextId:nx?nx.id:null},count:this.props.countdown??3,counting:true,visit:null});};
+  finishSaved=()=>{clearTimeout(this.ft);this.setState({screen:'today',counting:false,saved:null});};
+  confirmCost=()=>{const st=this.state,amt=r2(parseFloat(st.cost.amt)||0),L=this.L();let stops=[...st.stops];const ni=stops.findIndex(s=>!s.done);
+    if(st.cost.mode==='complete'){if(ni<0)return;stops[ni]={...stops[ni],done:true,cost:amt};this.setState({stops,sheet:null});if(amt)this.toast(`${S.boughtToast[L]} · ${m2(amt)}`);}
+    else{const ns={id:'x'+Date.now(),type:st.cost.type,place:PLACE[st.cost.type],done:amt>0,cost:amt};stops.splice(ni<0?stops.length:ni,0,ns);this.setState({stops,sheet:null});this.toast(S.stopAdded[L]);}};
+  key(k){this.setState(st=>{let a=st.cost.amt;
+    if(k==='⌫')a=a.slice(0,-1);
+    else if(k==='.'){if(a.includes('.'))return null;a=(a||'0')+'.';}
+    else{if(a.includes('.')&&a.split('.')[1].length>=2)return null;if(a.replace('.','').length>=5)return null;a=a==='0'?k:a+k;}
+    return {cost:{...st.cost,amt:a}};});}
+  markBought=()=>{const st=this.state,L=this.L();const sum=r2(st.shop.filter(x=>x.checked).reduce((a,x)=>a+x.qty*CH[x.id].p,0));
+    this.setState({shop:st.shop.filter(x=>!x.checked),restock:r2(st.restock+sum)});this.toast(`${S.boughtToast[L]} · ${m2(sum)}`);};
+  resetDemo=()=>{clearTimeout(this.ft);this.setState({...this.fresh(),screen:'today'});};
+  restartOb=()=>this.setState({screen:'ob1',sheet:null});
+  obNext=()=>this.setState(st=>({screen:st.screen==='ob1'?'ob2':st.screen==='ob2'?'ob3':'today'}));
+  obBack=()=>this.setState(st=>({screen:st.screen==='ob3'?'ob2':'ob1'}));
+
+  renderVals(){
+    const st=this.state,L=this.L(),pools=st.pools,stops=st.stops;
+    const t={};for(const k in S)t[k]=S[k][L];
+    const total=stops.length,doneCount=stops.filter(s=>s.done).length,nextIdx=stops.findIndex(s=>!s.done);
+    const stopName=s=>s.type==='pool'?pools[s.poolId].name:t[s.type];
+    const earned=stops.reduce((a,s)=>a+(s.done?(s.type==='pool'?s.net:-(s.cost||0)):0),0);
+    const ofTxt=(a,b)=>`${a} ${t.of} ${b}`;
+    const rv=(k,v)=>{const g=RG[k],s=v<g.min?'low':v>g.max?'high':'ok',c=SC[s];return {label:g.l,value:v.toFixed(g.d),state:t[s],pillBg:c.pill,tileBg:c.tile,color:c.c,s};};
+    const feeTxt=f=>L?`Tarifa $${f}`:`$${f} fee`;
+
+    const hero={isPool:false,isStop:false,isDone:nextIdx<0};
+    if(nextIdx>=0){const s=stops[nextIdx];hero.label=`${t.nextStop} · ${ofTxt(nextIdx+1,total)}`;
+      if(s.type==='pool'){const p=pools[s.poolId];Object.assign(hero,{isPool:true,name:p.name,addr:p.addr,hasGate:!!p.gate,gate:p.gate,fee:feeTxt(p.fee),noteDate:p.lastDate[L],note:p.note});}
+      else Object.assign(hero,{isStop:true,name:t[s.type],sub:s.place,iconCls:'ph ph-'+SICON[s.type]});}
+    const upcoming=stops.map((s,i)=>({s,i})).filter(o=>!o.s.done&&o.i!==nextIdx).map((o,j)=>{const s=o.s,pool=s.type==='pool';const p=pool?pools[s.poolId]:null;
+      return {isPool:pool,isOther:!pool,disc:String(o.i+1),iconCls:pool?'':'ph-fill ph-'+SICON[s.type],name:stopName(s),right:pool?`${p.drive} min`:s.place,divider:dv(j),onClick:pool?()=>this.openPool(p.id):()=>{}};});
+    const doneRows=stops.filter(s=>s.done).map((s,j)=>{const pool=s.type==='pool';
+      return {name:stopName(s),sub:pool?`${s.mins} min · ${t.chems} ${m2(s.chem)}`:s.place,right:pool?`+${m2(s.net)}`:(s.cost?`−${m2(s.cost)}`:'—'),color:pool?'#0f5c3b':'#9a2f17',divider:dv(j),onClick:pool?()=>this.openPool(s.poolId):()=>{}};});
+
+    let v={readings:[],chems:[],tasks:[]};
+    if(st.visit){const x=st.visit,p=pools[x.poolId],si=stops.findIndex(s=>s.id===x.stopId);
+      const sec=Math.floor(Math.max(0,st.now-x.start)/1000),chemCost=x.chems.reduce((a,c)=>a+c.qty*CH[c.id].p,0),net=p.fee-chemCost;
+      const nDone=TASKS.filter(k=>x.tasks[k]).length,hasNote=!!x.note;
+      v={name:p.name,sub:`${L?'Parada':'Stop'} ${ofTxt(si+1,total)} · ${p.addr}`,timer:`${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')} ${t.onSite}`,from:`${t.from} ${p.lastDate[L]}`,
+        readings:RK.map((k,j)=>({...rv(k,x.r[k]),divider:dv(j),minus:()=>this.reading(k,-1),plus:()=>this.reading(k,1)})),
+        chems:x.chems.map((c,i)=>{const ch=CH[c.id],u=ch.u[L],cost=m2(c.qty*ch.p),changed=c.qty!==c.prev;
+          return {name:ch.n[L],qty:`${fq(c.qty)} ${u}`,sub:c.prev===0?`${t.added} · ${cost}`:changed?`${t.changed} ${fq(c.prev)} ${u} · ${cost}`:`${t.same} · ${cost}`,
+            subColor:changed?'#0a6f8a':'#8a96a8',divider:dv(i),minus:()=>this.chem(i,-1),plus:()=>this.chem(i,1)};}),
+        tasks:TASKS.map((k,j)=>{const on=!!x.tasks[k];return {label:t[k],on,off:!on,color:on?'#0a1b36':'#5b6b82',iconCls:'ph ph-'+TICON[k],divider:dv(j),toggle:()=>this.upd(y=>{y.tasks={...y.tasks,[k]:!y.tasks[k]};return y;})};}),
+        tasksDone:`${ofTxt(nDone,TASKS.length)} ${t.done}`,
+        photoOn:x.photo,photoBg:x.photo?'#e8f5ee':'#e0f2f6',photoDot:x.photo?'#13734a':'#0a6f8a',photoIcon:x.photo?'ph-bold ph-check':'ph ph-camera',photoTitle:x.photo?t.photoAdded:t.addPhoto,photoSub:x.photo?t.tapRemove:t.photoSub,photoSubColor:x.photo?'#0f5c3b':'#0a5a70',
+        noteOn:hasNote,noteBg:hasNote?'#e8f5ee':'#e0f2f6',noteDot:hasNote?'#13734a':'#0a6f8a',noteIcon:hasNote?'ph-bold ph-check':'ph ph-chat-text',noteTitle:hasNote?t.noteAdded:t.writeNote,noteSub:hasNote?t.tapEdit:t.noteSub,noteSubColor:hasNote?'#0f5c3b':'#0a5a70',
+        noteOpen:x.noteOpen,note:x.note,
+        earned:L?`${m2(net)} ganado`:`${m2(net)} earned`,breakdown:L?`Tarifa ${m2(p.fee)} − ${m2(chemCost)} químicos`:`${m2(p.fee)} fee − ${m2(chemCost)} chems`};}
+
+    let s={};
+    if(st.saved){const x=st.saved,nx=x.nextId?stops.find(y=>y.id===x.nextId):null,cd=this.props.countdown??3;
+      s={title:`${t.visitSaved} · ${x.name}`,net:m2(x.net),fee:m2(x.fee),chem:`−${m2(x.chem)}`,mins:`${x.mins} min`,nextLabel:nx?`${t.next}: ${stopName(nx)}`:t.routeDone,
+        bar:st.counting?`${Math.round((cd-st.count)/cd*100)}%`:'0%',countText:st.counting?(L?`Regresando a Hoy en ${st.count}`:`Back to Today in ${st.count}`):t.paused};}
+
+    const q=st.search.trim().toLowerCase();
+    const plist=Object.values(pools).filter(p=>!q||p.name.toLowerCase().includes(q)||p.addr.toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name));
+    const poolRows=plist.map((p,j)=>{const bad=RK.map(k=>rv(k,p.last[k])).find(r=>r.s!=='ok');
+      return {name:p.name,addr:p.addr,initials:ini(p.name),last:`${t.lastVisit}: ${p.lastDate[L]}`,hasFlag:!!bad,flag:bad?`${bad.label} ${bad.state.toLowerCase()}`:'',flagBg:bad?SC[bad.s].pill:'',flagColor:bad?SC[bad.s].c:'',divider:dv(j),onClick:()=>this.openPool(p.id)};});
+    const margin=p=>{const e=p.history.filter(inMonth),fee=e.reduce((a,h)=>a+h.fee,0),net=e.reduce((a,h)=>a+h.net,0);return {n:e.length,net,pct:fee?Math.round(net/fee*100):0};};
+    const P=pools[st.poolId],pm=margin(P);
+    const chips=[{iconCls:'ph ph-swimming-pool',label:P.kind}];if(P.gate)chips.push({iconCls:'ph ph-lock-key',label:`${t.gate} ${P.gate}`});
+    chips.push({iconCls:'ph ph-calendar-blank',label:t.monday},{iconCls:'ph ph-currency-dollar',label:feeTxt(P.fee)});
+    const pd={name:P.name,addr:P.addr,chips,marginAmt:m2(pm.net),marginPct:`${pm.pct}%`,visitsLabel:`${pm.n} ${t.visits}`,
+      lastDate:P.lastDate[L],readings:RK.map(k=>rv(k,P.last[k])),note:P.note,
+      history:P.history.slice(0,5).map((h,j)=>({date:h.date[L],sub:`${h.mins} min · ${t.chems} ${m2(h.chem)}`,net:`+${m2(h.net)}`,divider:dv(j)}))};
+
+    const td={rev:0,chem:0,fuel:0,lunch:0,supply:0,visits:0};
+    stops.forEach(x=>{if(!x.done)return;if(x.type==='pool'){td.rev+=x.fee;td.chem+=x.chem;td.visits++;}else td[x.type]+=x.cost||0;});
+    const b=BASE[st.range],ag={};['rev','chem','fuel','lunch','supply','visits'].forEach(k=>ag[k]=b[k]+td[k]);ag.restock=b.restock+st.restock;
+    const other=ag.fuel+ag.lunch+ag.supply,rl={today:t.rToday,week:t.rWeek,month:t.rMonth};
+    const m={netLabel:`${t.net} · ${rl[st.range]}`,net:m2(ag.rev-ag.chem-other),rev:m2(ag.rev),chem:`−${m2(ag.chem)}`,other:`−${m2(other)}`};
+    const costGroups=[{label:t.chems,sub:`${ag.visits} ${t.visits}`,a:ag.chem,i:'flask'},{label:t.fuel,sub:'',a:ag.fuel,i:'gas-pump'},{label:t.lunch,sub:'',a:ag.lunch,i:'fork-knife'},{label:t.supply,sub:'',a:ag.supply,i:'storefront'},{label:t.restockL,sub:t.restock,a:ag.restock,c:'#5b6b82',i:'package'}]
+      .filter(g=>g.a>0).map((g,j)=>({label:g.label,sub:g.sub,hasSub:!!g.sub,iconCls:'ph ph-'+g.i,amount:`−${m2(g.a)}`,color:g.c||'#9a2f17',divider:dv(j)}));
+    const lowest=Object.values(pools).map(p=>({p,mg:margin(p)})).sort((a,c)=>a.mg.pct-c.mg.pct).slice(0,2)
+      .map((o,j)=>({name:o.p.name,sub:`${m2(o.mg.net)} · ${o.mg.n} ${t.visits}`,pct:`${o.mg.pct}%`,divider:dv(j),onClick:()=>this.openPool(o.p.id)}));
+    const ranges=['today','week','month'].map(r=>({label:rl[r],on:st.range===r,bg:st.range===r?'#0a2a5c':'transparent',color:st.range===r?'#fff':'#5b6b82',onClick:()=>this.setState({range:r})}));
+
+    const shopTotal=st.shop.reduce((a,x)=>a+x.qty*CH[x.id].p,0),checked=st.shop.filter(x=>x.checked),checkedSum=checked.reduce((a,x)=>a+x.qty*CH[x.id].p,0);
+    const shopItems=st.shop.map((x,j)=>{const ch=CH[x.id];return {name:ch.n[L],qty:`${fq(x.qty)} ${ch.u[L]} · ${m2(ch.p)}/${ch.u[L].replace(/s$/,'')}`,cost:m2(x.qty*ch.p),checked:x.checked,checkCls:x.checked?'ph-bold ph-check':'',
+      boxBg:x.checked?'#0a2a5c':'#ffffff',boxBorder:x.checked?'#0a2a5c':'#a3adbb',boxStyle:x.checked?'solid':'dashed',color:x.checked?'#8a96a8':'#0a1b36',deco:x.checked?'line-through':'none',divider:dv(j),
+      onClick:()=>this.setState(y=>({shop:y.shop.map(z=>z.id===x.id?{...z,checked:!z.checked}:z)}))};});
+    const shopSub=`${st.shop.length} ${t.items} · ~${m2(Math.round(shopTotal))}`.replace('.00','');
+
+    const tabScreens=['today','pools','money'],TABI={today:'sun-horizon',pools:'swimming-pool',money:'wallet'};
+    const tabs=tabScreens.map(k=>{const on=st.screen===k;return {label:t[k],current:on?'page':undefined,iconCls:(on?'ph-fill ph-':'ph ph-')+TABI[k],color:on?'#0a2a5c':'#a3adbb',weight:on?700:600,onClick:()=>this.go(k)};});
+    const sc=st.screen;
+    const isOb=sc==='ob1'||sc==='ob2'||sc==='ob3',step=sc==='ob1'?1:sc==='ob2'?2:3;
+    const langOptions=[['en','English'],['es','Español']].map(([k,l])=>({label:l,on:st.lang===k,bg:st.lang===k?'#0a2a5c':'transparent',color:st.lang===k?'#fff':'#5b6b82',onClick:()=>this.setState({lang:k})}));
+    const soonKeys=[['importApp','download-simple'],['techs','users-three'],['subscription','credit-card'],['desktop','desktop'],['repairs','wrench']];
+    const openSoon=k=>this.setState({sheet:'soon',soon:k});
+    const visitChemIds=st.visit?st.visit.chems.map(c=>c.id):[];
+    const chemOptions=Object.keys(CH).filter(id=>!visitChemIds.includes(id)).map((id,j)=>({name:CH[id].n[L],price:`${m2(CH[id].p)} / ${CH[id].u[L].replace(/s$/,'')}`,divider:dv(j),onClick:()=>{this.upd(y=>{y.chems=[...y.chems,{id,qty:CH[id].step,prev:0}];return y;});this.setState({sheet:null});}}));
+    const ct=st.cost.type;
+
+    return {
+      t,tabs,is:{today:sc==='today',visit:sc==='visit'&&!!st.visit,saved:sc==='saved'&&!!st.saved,pools:sc==='pools',pool:sc==='pool',money:sc==='money',shopping:sc==='shopping',account:sc==='account',
+        ob:isOb,ob1:sc==='ob1',ob2:sc==='ob2',ob3:sc==='ob3',tabbar:tabScreens.includes(sc),sheet:!!st.sheet,sheetAdd:st.sheet==='add',sheetCost:st.sheet==='cost',sheetChem:st.sheet==='chem',sheetSoon:st.sheet==='soon',toast:!!st.toast},
+      statusBg:sc==='saved'?'transparent':'#ffffff',statusColor:sc==='saved'?'#ffffff':'#0a1b36',
+      initials:ini(st.owner||'MD'),earnedLabel:m2(earned),stopsDone:String(doneCount),stopsTotal:String(total),toBuyLabel:`${st.shop.length} ${t.toBuy}`,
+      hero,upcoming,hasUpcoming:upcoming.length>0,doneRows,hasDone:doneRows.length>0,showDone:st.showDone,doneTitle:`${t.completed} ${ofTxt(doneCount,total)}`,doneCaret:st.showDone?'ph-bold ph-caret-up':'ph-bold ph-caret-down',
+      toggleDone:()=>this.setState(y=>({showDone:!y.showDone})),
+      goAccount:()=>this.go('account'),goShopping:()=>this.go('shopping'),goMoney:()=>this.go('money'),back:this.back,
+      startVisit:this.startVisit,completeStop:()=>{const x=stops[nextIdx];this.setState({sheet:'cost',cost:{mode:'complete',type:x.type,amt:''}});},openAdd:()=>this.setState({sheet:'add'}),
+      v,closeVisit:()=>this.setState({screen:'today',visit:null}),saveVisit:this.saveVisit,openChem:()=>this.setState({sheet:'chem'}),
+      togglePhoto:()=>this.upd(y=>{y.photo=!y.photo;return y;}),toggleNote:()=>this.upd(y=>{y.noteOpen=!y.noteOpen;return y;}),setNote:e=>{const val=e.target.value;this.upd(y=>{y.note=val;return y;});},
+      s,stayHere:()=>{clearTimeout(this.ft);this.setState({counting:false});},finishSaved:this.finishSaved,
+      search:st.search,setSearch:e=>this.setState({search:e.target.value}),poolRows,noPools:poolRows.length===0,poolsCount:L?`${Object.keys(pools).length} en ruta`:`${Object.keys(pools).length} on route`,
+      pd,m,costGroups,lowest,ranges,shopRowLabel:shopSub,
+      shopItems,shopSub,shopEmpty:st.shop.length===0,shopHasChecked:checked.length>0,markLabel:`${t.markBought} (${checked.length}) · ${m2(checkedSum)}`,markBought:this.markBought,
+      biz:st.biz,owner:st.owner,feeLabel:L?`$${st.fee} por visita`:`$${st.fee} per visit`,langOptions,
+      soonRows:soonKeys.map(([k,i],j)=>({label:t[k],iconCls:'ph ph-'+i,divider:dv(j),onClick:()=>openSoon(k)})),soonTitle:st.soon?t[st.soon]:'',
+      restartOb:this.restartOb,resetDemo:this.resetDemo,
+      ob:{stepLabel:`${t.step} ${ofTxt(step,3)}`,bars:[1,2,3].map(n=>({bg:n<=step?'#0a2a5c':'#e3e7ec'})),title:t['ob'+step+'Title'],sub:t['ob'+step+'Sub'],cta:step===3?t.startRoute:t.continue,hasBack:step>1},
+      obNext:this.obNext,obBack:this.obBack,setBiz:e=>this.setState({biz:e.target.value}),setOwner:e=>this.setState({owner:e.target.value}),
+      obFee:`$${st.fee}`,feeDown:()=>this.setState(y=>({fee:Math.max(10,y.fee-5)})),feeUp:()=>this.setState(y=>({fee:Math.min(200,y.fee+5)})),
+      feeChips:[30,35,40,45].map(f=>({label:`$${f}`,bg:st.fee===f?'#0a2a5c':'#f2f4f7',color:st.fee===f?'#fff':'#0a1b36',onClick:()=>this.setState({fee:f})})),
+      obPools:['p1','p2','p3'].map((id,j)=>({name:pools[id].name,addr:pools[id].addr,initials:ini(pools[id].name),fee:`$${st.fee}`,divider:dv(j)})),
+      addPoolDemo:()=>this.toast(t.demoPools),openImport:()=>openSoon('importApp'),
+      closeSheet:()=>this.setState({sheet:null}),stopProp:e=>e.stopPropagation(),
+      addTypes:['fuel','supply','lunch'].map((k,j)=>({label:t[k],sub:t[k+'Sub'],iconCls:'ph ph-'+SICON[k],divider:dv(j),onClick:()=>this.setState({sheet:'cost',cost:{mode:'add',type:k,amt:''}})})),
+      cs:{title:st.cost.mode==='complete'?`${t[ct]} · ${t.markDone}`:t[ct],amount:'$'+(st.cost.amt||'0'),color:st.cost.amt?'#0a1b36':'#b3bcc9',confirm:st.cost.mode==='complete'?t.markDone:t.addAStop},
+      keys:['1','2','3','4','5','6','7','8','9','.','0','⌫'].map(k=>({k,onClick:()=>this.key(k)})),confirmCost:this.confirmCost,
+      chemOptions,noChemOptions:chemOptions.length===0,
+      toast:st.toast||''
+    };
+  }
+}
+</script>
+</body>
+</html>

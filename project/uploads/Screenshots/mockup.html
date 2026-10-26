@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brush & Net Screenshots</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+  * { -webkit-tap-highlight-color: transparent; box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Space Grotesk', system-ui, sans-serif; background: #060a12; }
+  .screen { width: 390px; height: 844px; background: #0a0e16; position: relative; overflow: hidden; margin: 0 auto; }
+  .screen-scroll { height: 100%; overflow: hidden; }
+
+  /* ===== TODAY SCREEN ===== */
+  .today-screen { background: #0a0e16; }
+  .today-header {
+    background: linear-gradient(135deg, #14b8a6, #0d9488);
+    border-radius: 0 0 26px 26px;
+    padding: 6px 20px 20px;
+    color: #fff;
+  }
+  .today-header-top { display: flex; align-items: flex-start; justify-content: space-between; }
+  .today-date { font-size: 13px; font-weight: 600; opacity: 0.9; }
+  .today-greeting { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; margin-top: 2px; }
+  .today-settings-btn {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: rgba(255,255,255,.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; cursor: pointer; flex-shrink: 0;
+  }
+  .weather-card {
+    display: flex; align-items: center; gap: 14px; margin-top: 16px;
+    background: rgba(255,255,255,.13); border-radius: 16px; padding: 14px;
+  }
+  .weather-icon { font-size: 34px; line-height: 1; }
+  .weather-temp { font-size: 26px; font-weight: 700; line-height: 1; }
+  .weather-label { font-size: 14px; font-weight: 600; opacity: 0.85; }
+  .weather-detail { font-size: 12px; font-weight: 600; opacity: 0.88; margin-top: 3px; }
+  .weather-route { text-align: right; }
+  .weather-route-label { font-size: 11px; font-weight: 700; opacity: 0.85; }
+  .weather-route-count { font-size: 18px; font-weight: 700; }
+  .route-header {
+    padding: 18px 18px 0; display: flex; align-items: center; justify-content: space-between;
+  }
+  .route-title { font-size: 18px; font-weight: 700; color: #fff; }
+  .route-actions { display: flex; gap: 8px; }
+  .route-add-pool { font-size: 13px; font-weight: 700; color: #0d9488; cursor: pointer; }
+  .route-add-stop { font-size: 13px; font-weight: 700; color: #f97316; cursor: pointer; }
+  .stop-list { padding: 12px 18px 0; display: flex; flex-direction: column; gap: 11px; }
+  .stop-card {
+    background: #141b29; border: 1px solid #232c3e; border-radius: 16px;
+    padding: 13px; display: flex; align-items: center; gap: 12px;
+  }
+  .stop-check {
+    width: 30px; height: 30px; border-radius: 9px;
+    border: 2px solid #34d399; background: #34d399;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: #fff; cursor: pointer; flex-shrink: 0;
+  }
+  .stop-check-unchecked {
+    border-color: #3a4658; background: transparent;
+  }
+  .stop-info { flex: 1; min-width: 0; }
+  .stop-name-row { display: flex; align-items: center; gap: 7px; }
+  .stop-tag {
+    font-size: 11px; font-weight: 700; color: #0d9488;
+    background: rgba(13,148,136,.15); border-radius: 6px; padding: 2px 7px;
+  }
+  .stop-name { font-size: 15px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stop-name-done { color: #5b6680; }
+  .stop-address { font-size: 13px; color: #7e8aa0; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .stop-controls { display: flex; align-items: center; flex-shrink: 0; gap: 4px; }
+  .stop-arrows { display: flex; flex-direction: column; gap: 4px; }
+  .stop-arrow {
+    width: 38px; height: 26px; border-radius: 8px;
+    background: #1d2638; border: 1px solid #2c3346;
+    color: #9aa6bb; font-size: 13px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .stop-arrow-disabled { color: #3a4658; }
+  .stop-chevron { font-size: 18px; color: #5b6680; }
+  .save-order-btn {
+    margin: 14px 18px 0;
+    background: #1d2638; border: 1px solid #2c3346;
+    border-radius: 12px; padding: 12px 14px;
+    text-align: center; font-size: 13px; font-weight: 700; color: #9aa6bb;
+  }
+
+  /* ===== POOLS SCREEN ===== */
+  .pools-header { padding: 6px 18px 0; display: flex; align-items: center; justify-content: space-between; }
+  .pools-title { font-size: 24px; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+  .pools-count { font-size: 13px; color: #7e8aa0; font-weight: 600; }
+  .pools-add-btn {
+    width: 44px; height: 44px; border-radius: 14px;
+    background: #f97316; color: #fff; font-size: 26px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .sort-row { padding: 14px 18px 0; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .sort-label { font-size: 12px; color: #7e8aa0; font-weight: 600; }
+  .sort-btn {
+    font-size: 13px; font-weight: 700; border-radius: 10px; padding: 9px 14px;
+    cursor: pointer;
+  }
+  .sort-btn-active { background: #0d9488; color: #fff; border: 1px solid #0d9488; }
+  .sort-btn-inactive { background: #161d2c; color: #9aa6bb; border: 1px solid #2c3346; }
+  .search-row { padding: 12px 18px 0; }
+  .search-input {
+    width: 100%; background: #141b29; border: 1px solid #232c3e;
+    border-radius: 12px; padding: 11px 14px; color: #fff; font-size: 14px;
+    outline: none; font-family: inherit;
+  }
+  .pool-list { padding: 14px 18px 0; display: flex; flex-direction: column; gap: 10px; }
+  .pool-card {
+    background: #141b29; border: 1px solid #232c3e; border-radius: 16px;
+    padding: 13px; display: flex; align-items: center; gap: 12px; cursor: pointer;
+  }
+  .pool-avatar {
+    width: 42px; height: 42px; border-radius: 13px; color: #fff;
+    font-size: 15px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .pool-info { flex: 1; min-width: 0; }
+  .pool-name-row { display: flex; align-items: center; gap: 7px; }
+  .pool-name { font-size: 15px; font-weight: 700; color: #fff; }
+  .pool-address { font-size: 12px; color: #7e8aa0; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pool-rate { text-align: right; flex-shrink: 0; }
+  .pool-rate-amount { font-size: 14px; font-weight: 700; color: #34d399; }
+  .pool-rate-unit { font-size: 10px; color: #7e8aa0; }
+  .pool-freq { font-size: 11px; color: #7e8aa0; font-weight: 600; margin-top: 2px; }
+
+  /* ===== COSTS SCREEN ===== */
+  .costs-header { padding: 6px 18px 0; }
+  .costs-title { font-size: 24px; font-weight: 700; color: #fff; letter-spacing: -0.02em; }
+  .costs-sub { font-size: 13px; color: #7e8aa0; font-weight: 600; }
+  .stat-grid { padding: 16px 18px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-box { background: #141b29; border: 1px solid #232c3e; border-radius: 16px; padding: 14px; }
+  .stat-label { font-size: 11px; color: #7e8aa0; font-weight: 700; letter-spacing: .05em; }
+  .stat-value { font-size: 23px; font-weight: 700; margin-top: 4px; }
+  .dist-card {
+    margin: 18px 18px 0; background: #141b29; border: 1px solid #232c3e;
+    border-radius: 16px; padding: 16px 14px 14px;
+  }
+  .dist-title { font-size: 14px; font-weight: 700; color: #fff; padding: 0 4px; margin-bottom: 2px; }
+  .dist-sub { font-size: 11px; color: #7e8aa0; font-weight: 600; padding: 0 4px; margin-bottom: 14px; }
+  .dist-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+  .dist-bar-row:last-child { margin-bottom: 0; }
+  .dist-bar-label { width: 52px; font-size: 11px; font-weight: 700; color: #7e8aa0; text-align: right; flex-shrink: 0; }
+  .dist-bar-track { flex: 1; height: 22px; background: #0d1422; border-radius: 8px; overflow: hidden; }
+  .dist-bar-fill { height: 100%; border-radius: 8px; }
+  .dist-bar-value { width: 56px; font-size: 13px; font-weight: 700; color: #fff; text-align: right; flex-shrink: 0; }
+  .costs-link {
+    margin: 18px 18px 0; background: #1d2638; border: 1px solid #2c3346;
+    border-radius: 14px; padding: 15px; display: flex; align-items: center; gap: 12px; cursor: pointer;
+  }
+  .costs-link-icon { font-size: 22px; }
+  .costs-link-title { font-size: 15px; font-weight: 700; color: #fff; }
+  .costs-link-sub { font-size: 12px; color: #7e8aa0; font-weight: 600; }
+  .costs-link-arrow { font-size: 20px; color: #5b6680; }
+  .stmt-section { padding: 18px 18px 0; }
+  .stmt-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .stmt-sub { font-size: 11px; color: #7e8aa0; font-weight: 600; margin-bottom: 8px; }
+  .stmt-warn {
+    background: rgba(249,115,22,.1); border: 1px solid rgba(249,115,22,.25);
+    border-radius: 10px; padding: 10px 13px; margin-bottom: 12px;
+    font-size: 11px; font-weight: 600; color: #f97316; line-height: 1.5;
+  }
+  .stmt-item {
+    background: #141b29; border: 1px solid #232c3e; border-radius: 14px;
+    padding: 13px 15px; display: flex; align-items: center; gap: 12px; cursor: pointer; margin-bottom: 9px;
+  }
+  .stmt-item-icon { color: #2dd4bf; }
+  .stmt-item-title { font-size: 14px; font-weight: 700; color: #fff; }
+  .stmt-item-sub { font-size: 11px; color: #7e8aa0; font-weight: 600; }
+  .stmt-item-arrow { font-size: 16px; color: #5b6680; }
+  .usage-section { padding: 18px 18px 24px; }
+  .usage-title { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .usage-sub { font-size: 12px; color: #7e8aa0; font-weight: 600; margin-bottom: 14px; }
+  .usage-table { background: #141b29; border: 1px solid #232c3e; border-radius: 16px; overflow: hidden; }
+  .usage-header-row { display: flex; border-bottom: 1px solid #232c3e; padding: 10px 14px; gap: 6px; }
+  .usage-header-chem { flex: 1; font-size: 11px; font-weight: 700; color: #7e8aa0; letter-spacing: .04em; }
+  .usage-header-month { width: 52px; text-align: right; font-size: 10px; font-weight: 700; color: #7e8aa0; }
+  .usage-header-total { width: 52px; text-align: right; font-size: 10px; font-weight: 700; color: #0d9488; }
+  .usage-row { display: flex; align-items: center; padding: 10px 14px; gap: 6px; border-bottom: 1px solid #1e2736; }
+  .usage-row:last-child { border-bottom: none; }
+  .usage-chem-name { flex: 1; font-size: 13px; font-weight: 600; color: #cdd6e6; }
+  .usage-chem-unit { font-size: 10px; color: #5b6680; font-weight: 600; }
+  .usage-val { width: 52px; text-align: right; font-size: 12px; font-weight: 600; color: #9aa6bb; }
+  .usage-val-empty { color: #3a4658; }
+  .usage-total { width: 52px; text-align: right; font-size: 13px; font-weight: 700; color: #34d399; }
+  .perpool-title { padding: 18px 18px 0; font-size: 14px; font-weight: 700; color: #fff; }
+  .perpool-sub { font-size: 11px; color: #7e8aa0; font-weight: 600; padding: 4px 18px 0; }
+  .perpool-list { padding: 12px 18px 0; display: flex; flex-direction: column; gap: 9px; }
+  .perpool-card {
+    background: #141b29; border: 1px solid #232c3e; border-radius: 14px;
+    padding: 12px 14px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .perpool-name { font-size: 14px; font-weight: 700; color: #fff; }
+  .perpool-count { font-size: 11px; color: #7e8aa0; font-weight: 600; margin-top: 1px; }
+  .perpool-avg { font-size: 15px; font-weight: 700; color: #34d399; }
+
+  /* ===== ACCOUNT SCREEN ===== */
+  .acct-header {
+    background: #0c111c; border-bottom: 1px solid #1e2736; padding: 8px 18px 14px;
+    display: flex; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 10;
+  }
+  .acct-back-btn {
+    width: 36px; height: 36px; border-radius: 11px; background: #141b29; border: 1px solid #232c3e;
+    display: flex; align-items: center; justify-content: center; font-size: 20px; color: #9aa6bb; flex-shrink: 0;
+  }
+  .acct-header-title { font-size: 18px; font-weight: 700; color: #fff; }
+  .acct-body { padding: 16px 18px 0; }
+  .acct-badge {
+    background: linear-gradient(135deg, #14b8a6, #0d9488); border-radius: 16px;
+    padding: 14px 16px; display: flex; align-items: center; gap: 14px; margin-bottom: 20px;
+  }
+  .acct-badge-icon {
+    width: 44px; height: 44px; border-radius: 13px; background: rgba(255,255,255,.2);
+    display: flex; align-items: center; justify-content: center; font-size: 22px;
+  }
+  .acct-badge-email { font-size: 16px; font-weight: 700; color: #fff; }
+  .acct-badge-status { font-size: 12px; color: rgba(255,255,255,.78); font-weight: 600; }
+  .acct-section-label { font-size: 12px; font-weight: 700; color: #7e8aa0; letter-spacing: .06em; margin-bottom: 12px; }
+  .acct-field-row { margin-bottom: 12px; }
+  .acct-field-label { font-size: 11px; font-weight: 700; color: #7e8aa0; letter-spacing: .06em; margin-bottom: 6px; }
+  .acct-input {
+    width: 100%; background: #141b29; border: 1px solid #232c3e; border-radius: 11px;
+    padding: 12px 13px; color: #fff; font-size: 14px; outline: none; font-family: inherit;
+  }
+  .acct-data-card {
+    background: #141b29; border: 1px solid #232c3e; border-radius: 14px;
+    padding: 14px 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; margin-bottom: 10px;
+  }
+  .acct-data-icon {
+    width: 38px; height: 38px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+  }
+  .acct-data-title { font-size: 14px; font-weight: 700; color: #fff; }
+  .acct-data-sub { font-size: 12px; color: #7e8aa0; font-weight: 600; }
+  .acct-data-arrow { font-size: 18px; color: #5b6680; }
+  .acct-support-card {
+    background: #141b29; border: 1px solid #232c3e; border-radius: 14px;
+    padding: 16px; margin-bottom: 10px;
+  }
+  .acct-support-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .acct-support-row:last-child { margin-bottom: 0; }
+  .acct-support-icon {
+    width: 38px; height: 38px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .acct-support-label { font-size: 12px; color: #7e8aa0; font-weight: 700; letter-spacing: .04em; }
+  .acct-support-value { font-size: 15px; font-weight: 700; color: #fff; text-decoration: none; }
+  .acct-signout {
+    margin-top: 24px; margin-bottom: 28px;
+    background: rgba(239,68,68,.08); border: 1px solid rgba(239,68,68,.28);
+    border-radius: 14px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px; cursor: pointer;
+  }
+  .acct-signout-icon {
+    width: 38px; height: 38px; border-radius: 11px; background: rgba(239,68,68,.15);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .acct-signout-text { font-size: 14px; font-weight: 700; color: #f87171; }
+
+  /* ===== LOG VISIT SCREEN ===== */
+  .logvisit-header {
+    background: linear-gradient(135deg, #14b8a6, #0d9488);
+    padding: 8px 18px 18px; color: #fff;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .logvisit-back-btn {
+    width: 36px; height: 36px; border-radius: 11px; background: rgba(255,255,255,.18);
+    display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;
+  }
+  .logvisit-title { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; }
+  .logvisit-poolname { font-size: 13px; opacity: 0.88; font-weight: 600; }
+  .wc-section { padding: 14px 18px 0; }
+  .wc-label { font-size: 12px; font-weight: 700; color: #7e8aa0; letter-spacing: .06em; margin-bottom: 2px; }
+  .wc-hint { font-size: 11px; color: #5b6680; font-weight: 500; margin-bottom: 10px; }
+  .wc-header-row { display: flex; align-items: center; gap: 5px; padding-bottom: 6px; border-bottom: 1px solid #2c3346; margin-bottom: 4px; }
+  .wc-header-param { flex: 0 0 90px; font-size: 10px; font-weight: 800; color: #7e8aa0; letter-spacing: .05em; }
+  .wc-header-low { flex: 0 0 52px; font-size: 10px; font-weight: 800; color: #f97316; letter-spacing: .05em; text-align: center; }
+  .wc-header-ideal { flex: 0 0 52px; font-size: 10px; font-weight: 800; color: #34d399; letter-spacing: .05em; text-align: center; }
+  .wc-header-high { flex: 0 0 52px; font-size: 10px; font-weight: 800; color: #f87171; letter-spacing: .05em; text-align: center; }
+  .wc-header-notes { flex: 1; font-size: 10px; font-weight: 800; color: #7e8aa0; letter-spacing: .05em; }
+  .wc-row { display: flex; align-items: stretch; gap: 5px; padding: 5px 0; }
+  .wc-param { flex: 0 0 90px; display: flex; align-items: center; font-size: 11px; font-weight: 600; color: #c8d0de; line-height: 1.25; padding-right: 2px; }
+  .wc-param-unit { font-size: 9px; color: #5b6680; font-weight: 500; margin-left: 2px; }
+  .wc-cell {
+    flex: 0 0 52px; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; text-align: center;
+    border-radius: 8px; padding: 8px 2px; user-select: none; line-height: 1.2;
+  }
+  .wc-cell-empty { opacity: 0.3; }
+  .wc-cell-low-active { background: rgba(249,115,22,.18); border: 1px solid #f97316; color: #fdba74; }
+  .wc-cell-low-default { background: #111827; border: 1px solid #232c3e; color: #5b6680; }
+  .wc-cell-ideal-active { background: rgba(52,211,153,.18); border: 1px solid #34d399; color: #6ee7b7; }
+  .wc-cell-ideal-default { background: #111827; border: 1px solid #232c3e; color: #5b6680; }
+  .wc-cell-high-active { background: rgba(180,35,24,.18); border: 1px solid #f87171; color: #fca5a5; }
+  .wc-cell-high-default { background: #111827; border: 1px solid #232c3e; color: #5b6680; }
+  .wc-note-input {
+    flex: 1; min-width: 0; background: #0d1422; border: 1px solid #232c3e;
+    border-radius: 8px; padding: 7px 8px; color: #9aa6bb; font-size: 11px; outline: none; font-family: inherit;
+  }
+  .wc-general-notes {
+    width: 100%; background: #141b29; border: 1px solid #232c3e; border-radius: 12px;
+    padding: 10px 12px; color: #fff; font-size: 13px; outline: none; resize: none;
+    font-family: inherit; margin-top: 10px;
+  }
+  .actions-section { padding: 14px 18px 0; }
+  .actions-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+  .action-chip {
+    display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600;
+    border-radius: 10px; padding: 8px 12px; user-select: none;
+  }
+  .action-chip-checked { background: rgba(13,148,136,.15); border: 1px solid #0d9488; color: #0d9488; }
+  .action-chip-unchecked { background: #111827; border: 1px solid #232c3e; color: #7e8aa0; }
+  .action-check-box {
+    width: 16px; height: 16px; border-radius: 5px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 11px; font-weight: 800;
+  }
+  .action-check-checked { background: #0d9488; border: 1px solid #0d9488; }
+  .action-check-unchecked { background: transparent; border: 1px solid #3a4358; }
+  .action-other-input {
+    width: 100%; background: #0d1422; border: 1px solid #232c3e;
+    border-radius: 10px; padding: 10px 12px; color: #fff; font-size: 13px; outline: none; font-family: inherit;
+  }
+  .chems-section { padding: 14px 18px 0; }
+  .chems-label { font-size: 12px; font-weight: 700; color: #7e8aa0; letter-spacing: .06em; margin-bottom: 2px; }
+  .chem-row { display: flex; align-items: center; gap: 8px; padding: 11px 0; border-bottom: 1px solid #1e2736; }
+  .chem-name { flex: 1; font-size: 14px; font-weight: 600; color: #c8d0de; min-width: 0; }
+  .chem-unit-text { font-size: 12px; color: #7e8aa0; font-weight: 600; min-width: 30px; text-align: right; }
+  .chem-input {
+    width: 72px; background: #0d1422; border: 1px solid #2c3346; border-radius: 9px;
+    padding: 8px 10px; color: #fff; font-size: 14px; outline: none; text-align: right;
+  }
+  .issue-section { padding: 16px 18px 0; }
+  .issue-label { font-size: 12px; font-weight: 700; color: #7e8aa0; letter-spacing: .06em; margin-bottom: 8px; }
+  .issue-input {
+    width: 100%; background: #141b29; border: 1px solid #232c3e; border-radius: 12px;
+    padding: 11px 12px; color: #fff; font-size: 14px; outline: none; resize: none; font-family: inherit;
+  }
+  .photos-section { padding: 16px 18px 0; }
+  .photos-label { font-size: 12px; font-weight: 700; color: #7e8aa0; letter-spacing: .06em; margin-bottom: 10px; }
+  .photos-grid { display: flex; gap: 9px; flex-wrap: wrap; }
+  .photo-placeholder {
+    width: 80px; height: 68px; border-radius: 11px; border: 2px dashed #2c3346;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; flex-shrink: 0;
+  }
+  .photo-placeholder-icon { font-size: 20px; }
+  .photo-placeholder-text { font-size: 10px; color: #7e8aa0; font-weight: 700; }
+  .save-btn-section { padding: 18px 18px 0; }
+  .save-btn {
+    background: #0d9488; color: #fff; font-size: 15px; font-weight: 700;
+    text-align: center; border-radius: 14px; padding: 15px; cursor: pointer;
+  }
+
+  /* ===== BOTTOM NAV ===== */
+  .bottom-nav {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 100; pointer-events: none;
+  }
+  .nav-tab-bar {
+    position: relative; bottom: 16px; margin: 0 16px;
+    background: rgba(12,17,28,0.92); backdrop-filter: blur(16px);
+    border-radius: 24px; border: 1px solid #1e2736;
+    box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    height: 68px; display: flex; align-items: center; pointer-events: auto;
+  }
+  .nav-tab {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; padding-bottom: 4px;
+  }
+  .nav-tab-icon { font-size: 22px; }
+  .nav-tab-label { font-size: 11px; font-weight: 700; letter-spacing: .02em; }
+  .nav-tab-active { color: #0d9488; }
+  .nav-tab-inactive { color: #5b6680; }
+  .nav-tab-indicator { width: 20px; height: 3px; border-radius: 2px; background: #0d9488; margin-top: -3px; }
+  .nav-footer {
+    text-align: center; font-size: 10px; font-weight: 800; color: #f97316;
+    letter-spacing: .14em; text-transform: uppercase; padding-bottom: 8px; pointer-events: auto;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== SCREEN 1: TODAY ===== -->
+<div class="screen today-screen" id="screen-today">
+  <div class="screen-scroll" style="overflow-y: auto; scrollbar-width: none; padding-bottom: 110px;">
+    <div class="today-header">
+      <div class="today-header-top">
+        <div>
+          <div class="today-date">Sun · Aug 16</div>
+          <div class="today-greeting">Good afternoon, Mike</div>
+        </div>
+        <div class="today-settings-btn">⚙</div>
+      </div>
+      <div class="weather-card">
+        <div class="weather-icon">⛅</div>
+        <div style="flex: 1;">
+          <div class="weather-temp">91° <span class="weather-label">· Partly Cloudy</span></div>
+          <div class="weather-detail">Feels 98° · Wind 8 mph · Rain 20%</div>
+        </div>
+        <div class="weather-route">
+          <div class="weather-route-label">ROUTE</div>
+          <div class="weather-route-count">3/7</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="route-header">
+      <div class="route-title">Today's route</div>
+      <div class="route-actions">
+        <span class="route-add-pool">+ Pool</span>
+        <span class="route-add-stop">+ Stop</span>
+      </div>
+    </div>
+
+    <div class="stop-list">
+      <div class="stop-card">
+        <div class="stop-check">✓</div>
+        <div class="stop-info">
+          <div class="stop-name-row">
+            <span class="stop-tag">#1</span>
+            <span class="stop-name stop-name-done">Patricia Anderson</span>
+            <span style="font-size: 13px;">🐕</span>
+          </div>
+          <div class="stop-address">142 Oak St, Jacksonville, FL 32204</div>
+        </div>
+        <div class="stop-controls">
+          <div class="stop-arrows">
+            <div class="stop-arrow stop-arrow-disabled">▲</div>
+            <div class="stop-arrow">▼</div>
+          </div>
+          <div class="stop-chevron">›</div>
+        </div>
+      </div>
+
+      <div class="stop-card">
+        <div class="stop-check">✓</div>
+        <div class="stop-info">
+          <div class="stop-name-row">
+            <span class="stop-tag">#2</span>
+            <span class="stop-name stop-name-done">Robert Brooks</span>
+          </div>
+          <div class="stop-address">78 Riverside Dr, St Johns, FL 32259</div>
+        </div>
+        <div class="stop-controls">
+          <div class="stop-arrows">
+            <div class="stop-arrow">▲</div>
+            <div class="stop-arrow">▼</div>
+          </div>
+          <div class="stop-chevron">›</div>
+        </div>
+      </div>
+
+      <div class="stop-card">
+        <div class="stop-check">✓</div>
+        <div class="stop-info">
+          <div class="stop-name-row">
+            <span class="stop-tag">#3</span>
+            <span class="stop-name stop-name-done">Diana Castillo</span>
+            <span style="font-size: 13px;">🐕</span>
+          </div>
+          <div class="stop-address">305 Cypress Ln, Jacksonville, FL 32225</div>
+        </div>
+        <div class="stop-controls">
+          <div class="stop-arrows">
+            <div class="stop-arrow">▲</div>
+            <div class="stop-arrow">▼</div>
+          </div>
+          <div class="stop-chevron">›</div>
+        </div>
+      </div>
+
+      <div class="stop-card">
+        <div class="stop-check stop-check-unchecked"></div>
+        <div class="stop-info">
+          <div class="stop-name-row">
+            <span class="stop-tag">#4</span>
+            <span class="stop-name">James Foster</span>
+          </div>
+          <div class="stop-address">921 Willow Way, Neptune Beach, FL 32266</div>
+        </div>
+        <div class="stop-controls">
+          <div class="stop-arrows">
+            <div class="stop-arrow">▲</div>
+            <div class="stop-arrow">▼</div>
+          </div>
+          <div class="stop-chevron">›</div>
+        </div>
+      </div>
+
+      <div class="stop-card">
+        <div class="stop-check stop-check-unchecked"></div>
+        <div class="stop-info">
+          <div class="stop-name-row">
+            <span class="stop-tag">#5</span>
+            <span class="stop-name">Susan Harris</span>
+          </div>
+          <div class="stop-address">440 Birch Ave, Atlantic Beach, FL 32233</div>
+        </div>
+        <div class="stop-controls">
+          <div class="stop-arrows">
+            <div class="stop-arrow">▲</div>
+            <div class="stop-arrow">▼</div>
+          </div>
+          <div class="stop-chevron">›</div>
+        </div>
+      </div>
+
+      <div class="stop-card">
+        <div class="stop-check stop-check-unchecked"></div>
+        <div class="stop-info">
+          <div class="stop-name-row">
+            <span class="stop-tag">#6</span>
+            <span class="stop-name">Kevin Mitchell</span>
+            <span style="font-size: 13px;">🐕</span>
+          </div>
+          <div class="stop-address">67 Palm Ct, Jacksonville, FL 32207</div>
+        </div>
+        <div class="stop-controls">
+          <div class="stop-arrows">
+            <div class="stop-arrow">▲</div>
+            <div class="stop-arrow">▼</div>
+          </div>
+          <div class="stop-chevron">›</div>
+        </div>
+      </div>
+
+      <div class="stop-card">
+        <div class="stop-check stop-check-unchecked"></div>
+        <div class="stop-info">
+          <div class="stop-name-row">
+            <span class="stop-tag">#7</span>
+            <span class="stop-name">Linda Parker</span>
+          </div>
+          <div class="stop-address">1230 Magnolia Blvd, Jacksonville, FL 32216</div>
+        </div>
+        <div class="stop-controls">
+          <div class="stop-arrows">
+            <div class="stop-arrow">▲</div>
+            <div class="stop-arrow stop-arrow-disabled">▼</div>
+          </div>
+          <div class="stop-chevron">›</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="save-order-btn">Save as default order for every Sun</div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-tab-bar">
+      <div class="nav-tab nav-tab-active">
+        <div class="nav-tab-icon">🏠</div>
+        <div class="nav-tab-label nav-tab-active">Today</div>
+        <div class="nav-tab-indicator"></div>
+      </div>
+      <div class="nav-tab">
+        <div class="nav-tab-icon">🌊</div>
+        <div class="nav-tab-label nav-tab-inactive">Pools</div>
+      </div>
+      <div class="nav-tab">
+        <div class="nav-tab-icon">📊</div>
+        <div class="nav-tab-label nav-tab-inactive">Costs</div>
+      </div>
+    </div>
+    <div class="nav-footer">Brush &amp; Net</div>
+  </div>
+</div>
+
+
+<!-- ===== SCREEN 2: POOLS ===== -->
+<div class="screen" id="screen-pools" style="display:none;">
+  <div class="screen-scroll" style="overflow-y: auto; scrollbar-width: none; padding-bottom: 110px;">
+    <div class="pools-header">
+      <div>
+        <div class="pools-title">Pools</div>
+        <div class="pools-count">14 active accounts</div>
+      </div>
+      <div class="pools-add-btn">+</div>
+    </div>
+
+    <div class="sort-row">
+      <span class="sort-label">Sort</span>
+      <span class="sort-btn sort-btn-active">Last name</span>
+      <span class="sort-btn sort-btn-inactive">First name</span>
+    </div>
+
+    <div class="search-row">
+      <input class="search-input" type="text" placeholder="Search by name or address…" />
+    </div>
+
+    <div class="pool-list">
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#0d9488;">PA</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Patricia Anderson</span><span style="font-size:12px;">🐕</span></div>
+          <div class="pool-address">142 Oak St, Jacksonville, FL 32204</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$150<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Mon & Thu</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#f97316;">RB</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Robert Brooks</span></div>
+          <div class="pool-address">78 Riverside Dr, St Johns, FL 32259</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$165<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Sun & Wed</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#6366f1;">DC</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Diana Castillo</span><span style="font-size:12px;">🐕</span></div>
+          <div class="pool-address">305 Cypress Ln, Jacksonville, FL 32225</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$140<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Sun & Wed</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#0ea5e9;">JD</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Thomas Diaz</span></div>
+          <div class="pool-address">889 San Jose Blvd, Jacksonville, FL 32217</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$175<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Bi-weekly · Tue</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#db2777;">JF</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">James Foster</span></div>
+          <div class="pool-address">921 Willow Way, Neptune Beach, FL 32266</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$160<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Sun & Wed</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#16a34a;">SH</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Susan Harris</span></div>
+          <div class="pool-address">440 Birch Ave, Atlantic Beach, FL 32233</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$145<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Sun & Wed</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#d97706;">RK</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Rachel King</span><span style="font-size:12px;">🐕</span></div>
+          <div class="pool-address">5523 Beach Blvd, Jacksonville, FL 32207</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$155<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Mon & Thu</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#0d9488;">KM</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Kevin Mitchell</span><span style="font-size:12px;">🐕</span></div>
+          <div class="pool-address">67 Palm Ct, Jacksonville, FL 32207</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$170<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Sun & Wed</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#f97316;">LP</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Linda Parker</span></div>
+          <div class="pool-address">1230 Magnolia Blvd, Jacksonville, FL 32216</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$150<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Sun & Wed</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#6366f1;">MR</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Michael Reyes</span></div>
+          <div class="pool-address">3476 St Johns Bluff Rd, Jacksonville, FL 32224</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$180<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Mon & Thu</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#0ea5e9;">JS</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Jennifer Stewart</span></div>
+          <div class="pool-address">219 Atlantic Blvd N, Atlantic Beach, FL 32233</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$145<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Tue & Fri</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#db2777;">DT</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">David Thompson</span></div>
+          <div class="pool-address">6500 Arlington Expressway, Jacksonville, FL 32211</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$160<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Mon & Thu</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#16a34a;">EV</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Emily Walker</span><span style="font-size:12px;">🐕</span></div>
+          <div class="pool-address">14 Lakeside Dr, St Augustine, FL 32092</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$190<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Weekly · Tue & Fri</div>
+        </div>
+      </div>
+
+      <div class="pool-card">
+        <div class="pool-avatar" style="background:#d97706;">BW</div>
+        <div class="pool-info">
+          <div class="pool-name-row"><span class="pool-name">Brandon Wright</span></div>
+          <div class="pool-address">7899 Philips Hwy, Jacksonville, FL 32256</div>
+        </div>
+        <div class="pool-rate">
+          <div class="pool-rate-amount">$155<span class="pool-rate-unit">/mo</span></div>
+          <div class="pool-freq">Bi-weekly · Wed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-tab-bar">
+      <div class="nav-tab">
+        <div class="nav-tab-icon">🏠</div>
+        <div class="nav-tab-label nav-tab-inactive">Today</div>
+      </div>
+      <div class="nav-tab nav-tab-active">
+        <div class="nav-tab-icon">🌊</div>
+        <div class="nav-tab-label nav-tab-active">Pools</div>
+        <div class="nav-tab-indicator"></div>
+      </div>
+      <div class="nav-tab">
+        <div class="nav-tab-icon">📊</div>
+        <div class="nav-tab-label nav-tab-inactive">Costs</div>
+      </div>
+    </div>
+    <div class="nav-footer">Brush &amp; Net</div>
+  </div>
+</div>
+
+
+<!-- ===== SCREEN 3: COSTS ===== -->
+<div class="screen" id="screen-costs" style="display:none;">
+  <div class="screen-scroll" style="overflow-y: auto; scrollbar-width: none; padding-bottom: 110px;">
+    <div class="costs-header">
+      <div class="costs-title">Costs & reports</div>
+      <div class="costs-sub">87 visits logged</div>
+    </div>
+
+    <div class="stat-grid">
+      <div class="stat-box">
+        <div class="stat-label">MONTHLY REVENUE</div>
+        <div class="stat-value" style="color:#fff;">$2,200</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">CHEMICAL COST</div>
+        <div class="stat-value" style="color:#f97316;">$284.50</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">EST. MARGIN</div>
+        <div class="stat-value" style="color:#34d399;">$1,916</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">AVG / CLEANING</div>
+        <div class="stat-value" style="color:#fff;">$3.27</div>
+      </div>
+    </div>
+
+    <div class="dist-card">
+      <div class="dist-title">Cost per cleaning — last 90 days</div>
+      <div class="dist-sub">42 cleanings · May 18 → today</div>
+      <div class="dist-bar-row">
+        <div class="dist-bar-label">AVERAGE</div>
+        <div class="dist-bar-track"><div class="dist-bar-fill" style="width: 42%; background: #34d399;"></div></div>
+        <div class="dist-bar-value">$3.27</div>
+      </div>
+      <div class="dist-bar-row">
+        <div class="dist-bar-label">MEDIAN</div>
+        <div class="dist-bar-track"><div class="dist-bar-fill" style="width: 38%; background: #14b8a6;"></div></div>
+        <div class="dist-bar-value">$2.95</div>
+      </div>
+      <div class="dist-bar-row">
+        <div class="dist-bar-label">HIGH</div>
+        <div class="dist-bar-track"><div class="dist-bar-fill" style="width: 100%; background: #f97316;"></div></div>
+        <div class="dist-bar-value">$7.80</div>
+      </div>
+    </div>
+
+    <div class="costs-link">
+      <div class="costs-link-icon">🧪</div>
+      <div style="flex:1;">
+        <div class="costs-link-title">Set chemical prices</div>
+        <div class="costs-link-sub">Update cost per unit — visit costs recalculate</div>
+      </div>
+      <div class="costs-link-arrow">›</div>
+    </div>
+
+    <div class="stmt-section">
+      <div class="stmt-title">Monthly statements</div>
+      <div class="stmt-sub">Download the last 3 completed months as CSV</div>
+      <div class="stmt-warn">Statements are only available for the last 90 days. After 90 days, past months are permanently deleted and cannot be recovered. Download each month before it expires.</div>
+      <div class="stmt-item">
+        <span class="stmt-item-icon">⬇</span>
+        <div style="flex:1;">
+          <div class="stmt-item-title">Jul 2026 Statement</div>
+          <div class="stmt-item-sub">Per-pool costs, revenue, profit, and chemical totals</div>
+        </div>
+        <div class="stmt-item-arrow">›</div>
+      </div>
+      <div class="stmt-item">
+        <span class="stmt-item-icon">⬇</span>
+        <div style="flex:1;">
+          <div class="stmt-item-title">Jun 2026 Statement</div>
+          <div class="stmt-item-sub">Per-pool costs, revenue, profit, and chemical totals</div>
+        </div>
+        <div class="stmt-item-arrow">›</div>
+      </div>
+      <div class="stmt-item">
+        <span class="stmt-item-icon">⬇</span>
+        <div style="flex:1;">
+          <div class="stmt-item-title">May 2026 Statement</div>
+          <div class="stmt-item-sub">Per-pool costs, revenue, profit, and chemical totals</div>
+        </div>
+        <div class="stmt-item-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="usage-section">
+      <div class="usage-title">Chemical usage — all pools</div>
+      <div class="usage-sub">Total quantity used per month (last 6 months)</div>
+      <div class="usage-table">
+        <div class="usage-header-row">
+          <div class="usage-header-chem">CHEMICAL</div>
+          <div class="usage-header-month">Mar</div>
+          <div class="usage-header-month">Apr</div>
+          <div class="usage-header-month">May</div>
+          <div class="usage-header-month">Jun</div>
+          <div class="usage-header-month">Jul</div>
+          <div class="usage-header-month">Aug</div>
+          <div class="usage-header-total">TOTAL</div>
+        </div>
+        <div class="usage-row">
+          <div style="flex:1; min-width:0;">
+            <div class="usage-chem-name">Liquid Chlorine</div>
+            <div class="usage-chem-unit">gal</div>
+          </div>
+          <div class="usage-val">22</div>
+          <div class="usage-val">24</div>
+          <div class="usage-val">26</div>
+          <div class="usage-val">25</div>
+          <div class="usage-val">28</div>
+          <div class="usage-val">18</div>
+          <div class="usage-total">143</div>
+        </div>
+        <div class="usage-row">
+          <div style="flex:1; min-width:0;">
+            <div class="usage-chem-name">Chlorine Tablets</div>
+            <div class="usage-chem-unit">tab</div>
+          </div>
+          <div class="usage-val">48</div>
+          <div class="usage-val">52</div>
+          <div class="usage-val">55</div>
+          <div class="usage-val">50</div>
+          <div class="usage-val">58</div>
+          <div class="usage-val">36</div>
+          <div class="usage-total">299</div>
+        </div>
+        <div class="usage-row">
+          <div style="flex:1; min-width:0;">
+            <div class="usage-chem-name">Shock</div>
+            <div class="usage-chem-unit">lb</div>
+          </div>
+          <div class="usage-val">14</div>
+          <div class="usage-val">16</div>
+          <div class="usage-val">18</div>
+          <div class="usage-val">15</div>
+          <div class="usage-val">20</div>
+          <div class="usage-val">12</div>
+          <div class="usage-total">95</div>
+        </div>
+        <div class="usage-row">
+          <div style="flex:1; min-width:0;">
+            <div class="usage-chem-name">pH Down</div>
+            <div class="usage-chem-unit">lb</div>
+          </div>
+          <div class="usage-val">8.5</div>
+          <div class="usage-val">9.2</div>
+          <div class="usage-val">10.1</div>
+          <div class="usage-val">8.8</div>
+          <div class="usage-val">11.0</div>
+          <div class="usage-val">6.5</div>
+          <div class="usage-total">54.1</div>
+        </div>
+        <div class="usage-row">
+          <div style="flex:1; min-width:0;">
+            <div class="usage-chem-name">pH Up</div>
+            <div class="usage-chem-unit">lb</div>
+          </div>
+          <div class="usage-val">3.2</div>
+          <div class="usage-val">2.8</div>
+          <div class="usage-val">3.5</div>
+          <div class="usage-val">3.0</div>
+          <div class="usage-val">4.1</div>
+          <div class="usage-val">2.2</div>
+          <div class="usage-total">18.8</div>
+        </div>
+        <div class="usage-row">
+          <div style="flex:1; min-width:0;">
+            <div class="usage-chem-name">Salt</div>
+            <div class="usage-chem-unit">bag</div>
+          </div>
+          <div class="usage-val usage-val-empty">—</div>
+          <div class="usage-val">2</div>
+          <div class="usage-val usage-val-empty">—</div>
+          <div class="usage-val">1</div>
+          <div class="usage-val">3</div>
+          <div class="usage-val">2</div>
+          <div class="usage-total">8</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="perpool-title">Average cost by pool</div>
+    <div class="perpool-sub">Sorted alphabetically by last name</div>
+    <div class="perpool-list">
+      <div class="perpool-card">
+        <div>
+          <div class="perpool-name">Anderson, Patricia</div>
+          <div class="perpool-count">8 visits</div>
+        </div>
+        <div class="perpool-avg">$3.15</div>
+      </div>
+      <div class="perpool-card">
+        <div>
+          <div class="perpool-name">Brooks, Robert</div>
+          <div class="perpool-count">7 visits</div>
+        </div>
+        <div class="perpool-avg">$2.80</div>
+      </div>
+      <div class="perpool-card">
+        <div>
+          <div class="perpool-name">Castillo, Diana</div>
+          <div class="perpool-count">9 visits</div>
+        </div>
+        <div class="perpool-avg">$3.42</div>
+      </div>
+      <div class="perpool-card">
+        <div>
+          <div class="perpool-name">Foster, James</div>
+          <div class="perpool-count">6 visits</div>
+        </div>
+        <div class="perpool-avg">$4.10</div>
+      </div>
+      <div class="perpool-card">
+        <div>
+          <div class="perpool-name">Mitchell, Kevin</div>
+          <div class="perpool-count">8 visits</div>
+        </div>
+        <div class="perpool-avg">$3.65</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <div class="nav-tab-bar">
+      <div class="nav-tab">
+        <div class="nav-tab-icon">🏠</div>
+        <div class="nav-tab-label nav-tab-inactive">Today</div>
+      </div>
+      <div class="nav-tab">
+        <div class="nav-tab-icon">🌊</div>
+        <div class="nav-tab-label nav-tab-inactive">Pools</div>
+      </div>
+      <div class="nav-tab nav-tab-active">
+        <div class="nav-tab-icon">📊</div>
+        <div class="nav-tab-label nav-tab-active">Costs</div>
+        <div class="nav-tab-indicator"></div>
+      </div>
+    </div>
+    <div class="nav-footer">Brush &amp; Net</div>
+  </div>
+</div>
+
+
+<!-- ===== SCREEN 4: ACCOUNT & SETTINGS ===== -->
+<div class="screen" id="screen-account" style="display:none;">
+  <div class="screen-scroll" style="overflow-y: auto; scrollbar-width: none; padding-bottom: 20px;">
+    <div class="acct-header">
+      <div class="acct-back-btn">‹</div>
+      <div class="acct-header-title">Account &amp; settings</div>
+    </div>
+
+    <div class="acct-body">
+      <div class="acct-badge">
+        <div class="acct-badge-icon">🌊</div>
+        <div style="flex:1;">
+          <div class="acct-badge-email">mike@riverapoolservice.com</div>
+          <div class="acct-badge-status">Signed in</div>
+        </div>
+      </div>
+
+      <div class="acct-data-card" style="background: rgba(13,148,136,.1); border: 1px solid rgba(13,148,136,.3); margin-bottom: 20px;">
+        <div class="acct-data-icon" style="background: rgba(13,148,136,.2);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div class="acct-data-title" style="color:#2dd4bf;">Owner admin panel</div>
+          <div class="acct-data-sub">View all users &amp; their pools</div>
+        </div>
+        <div class="acct-data-arrow">›</div>
+      </div>
+
+      <div class="acct-section-label">YOUR INFO</div>
+      <div class="acct-field-row">
+        <div class="acct-field-label">DISPLAY NAME</div>
+        <input class="acct-input" type="text" value="Mike Rivera" />
+      </div>
+      <div class="acct-field-row">
+        <div class="acct-field-label">BUSINESS NAME</div>
+        <input class="acct-input" type="text" value="Rivera Pool Service" />
+      </div>
+      <div class="acct-field-row">
+        <div class="acct-field-label">EMAIL (FOR REPORTS)</div>
+        <input class="acct-input" type="email" value="mike@riverapoolservice.com" />
+      </div>
+      <div class="acct-field-row">
+        <div class="acct-field-label">PHONE (FOR REPORTS)</div>
+        <input class="acct-input" type="tel" value="(904) 555-0182" />
+      </div>
+
+      <div class="acct-section-label" style="margin-top:8px;">ACCOUNTS</div>
+      <div class="acct-data-card" style="margin-bottom:20px;">
+        <div class="acct-data-icon" style="background: rgba(100,116,139,.18);">🗄</div>
+        <div style="flex:1;">
+          <div class="acct-data-title">Archived pools</div>
+          <div class="acct-data-sub">2 inactive accounts</div>
+        </div>
+        <div class="acct-data-arrow">›</div>
+      </div>
+
+      <div class="acct-section-label" style="margin-top:8px;">DATA &amp; BACKUP</div>
+      <div class="acct-data-card">
+        <div class="acct-data-icon" style="background: rgba(20,184,166,.15);">📊</div>
+        <div style="flex:1;">
+          <div class="acct-data-title">Export as CSV</div>
+          <div class="acct-data-sub">Pools in spreadsheet format</div>
+        </div>
+        <div class="acct-data-arrow">›</div>
+      </div>
+      <div class="acct-data-card">
+        <div class="acct-data-icon" style="background: rgba(249,115,22,.15);">💾</div>
+        <div style="flex:1;">
+          <div class="acct-data-title">Export as JSON</div>
+          <div class="acct-data-sub">Full backup — all data &amp; settings</div>
+        </div>
+        <div class="acct-data-arrow">›</div>
+      </div>
+      <div class="acct-data-card">
+        <div class="acct-data-icon" style="background: rgba(99,102,241,.15);">📥</div>
+        <div style="flex:1;">
+          <div class="acct-data-title">Import CSV</div>
+          <div class="acct-data-sub">Bring in pools from another app or spreadsheet</div>
+        </div>
+        <div class="acct-data-arrow">›</div>
+      </div>
+      <div class="acct-data-card">
+        <div class="acct-data-icon" style="background: rgba(99,102,241,.15);">📥</div>
+        <div style="flex:1;">
+          <div class="acct-data-title">Import JSON</div>
+          <div class="acct-data-sub">Restore from a Brush &amp; Net backup</div>
+        </div>
+        <div class="acct-data-arrow">›</div>
+      </div>
+      <div class="acct-data-card">
+        <div class="acct-data-icon" style="background: rgba(20,184,166,.15);">📑</div>
+        <div style="flex:1;">
+          <div class="acct-data-title">Import Excel</div>
+          <div class="acct-data-sub">All tabs — auto-detects inactive pools into archive</div>
+        </div>
+        <div class="acct-data-arrow">›</div>
+      </div>
+
+      <div class="acct-section-label" style="margin-top:24px;">SUPPORT</div>
+      <div class="acct-support-card">
+        <div class="acct-support-row">
+          <div class="acct-support-icon" style="background: rgba(20,184,166,.15);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          </div>
+          <div>
+            <div class="acct-support-label">CALL OR TEXT</div>
+            <div class="acct-support-value">386-240-9433</div>
+          </div>
+        </div>
+        <div class="acct-support-row">
+          <div class="acct-support-icon" style="background: rgba(249,115,22,.15);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </div>
+          <div>
+            <div class="acct-support-label">EMAIL</div>
+            <div class="acct-support-value">904chapman@gmail.com</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acct-data-card" style="margin-bottom:10px;">
+        <div class="acct-data-icon" style="background: rgba(52,211,153,.15);">＋</div>
+        <div style="flex:1;">
+          <div class="acct-data-title">How to add pools</div>
+          <div class="acct-data-sub">Add one at a time or import in bulk</div>
+        </div>
+        <div class="acct-data-arrow">›</div>
+      </div>
+
+      <div class="acct-data-card">
+        <div class="acct-data-icon" style="background: rgba(234,179,8,.15);">❓</div>
+        <div style="flex:1;">
+          <div class="acct-data-title">Import tips &amp; column names</div>
+          <div class="acct-data-sub">CSV, Excel, JSON, Skimmer &amp; Pool Brain</div>
+        </div>
+        <div class="acct-data-arrow">›</div>
+      </div>
+
+      <div class="acct-signout">
+        <div class="acct-signout-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+        </div>
+        <div style="flex:1;">
+          <div class="acct-signout-text">Sign out</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== SCREEN 5: LOG A VISIT ===== -->
+<div class="screen" id="screen-logvisit" style="display:none;">
+  <div class="screen-scroll" style="overflow-y: auto; scrollbar-width: none; padding-bottom: 24px;">
+    <div class="logvisit-header">
+      <div class="logvisit-back-btn">‹</div>
+      <div>
+        <div class="logvisit-title">Log visit</div>
+        <div class="logvisit-poolname">James Foster</div>
+      </div>
+    </div>
+
+    <div class="wc-section">
+      <div class="wc-label">WATER CHEMISTRY (optional)</div>
+      <div class="wc-hint">Tap a range cell to mark the reading. Enter exact amounts in Notes if needed.</div>
+      <div class="wc-header-row">
+        <div class="wc-header-param">PARAMETER</div>
+        <div class="wc-header-low">LOW</div>
+        <div class="wc-header-ideal">IDEAL</div>
+        <div class="wc-header-high">HIGH</div>
+        <div class="wc-header-notes">NOTES</div>
+      </div>
+
+      <div class="wc-row">
+        <div class="wc-param">Free Chlorine<span class="wc-param-unit">ppm</span></div>
+        <div class="wc-cell wc-cell-low-default">1.0</div>
+        <div class="wc-cell wc-cell-ideal-active">1.0–3.0</div>
+        <div class="wc-cell wc-cell-high-default">5.0</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" value="2.2" />
+      </div>
+      <div class="wc-row">
+        <div class="wc-param">Total Chlorine<span class="wc-param-unit">ppm</span></div>
+        <div class="wc-cell wc-cell-low-default">1.0</div>
+        <div class="wc-cell wc-cell-ideal-active">1.0–4.0</div>
+        <div class="wc-cell wc-cell-high-default">4.0</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" value="2.5" />
+      </div>
+      <div class="wc-row">
+        <div class="wc-param">Bromine<span class="wc-param-unit">ppm</span></div>
+        <div class="wc-cell wc-cell-low-default wc-cell-empty">3.0</div>
+        <div class="wc-cell wc-cell-ideal-default wc-cell-empty">3.0–5.0</div>
+        <div class="wc-cell wc-cell-high-default wc-cell-empty">8.0</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" />
+      </div>
+      <div class="wc-row">
+        <div class="wc-param">pH</div>
+        <div class="wc-cell wc-cell-low-default">7.2</div>
+        <div class="wc-cell wc-cell-ideal-active">7.2–7.6</div>
+        <div class="wc-cell wc-cell-high-default">7.8</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" value="7.4" />
+      </div>
+      <div class="wc-row">
+        <div class="wc-param">Total Alkalinity<span class="wc-param-unit">ppm</span></div>
+        <div class="wc-cell wc-cell-low-active">80</div>
+        <div class="wc-cell wc-cell-ideal-default">80–120</div>
+        <div class="wc-cell wc-cell-high-default">150</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" value="75" />
+      </div>
+      <div class="wc-row">
+        <div class="wc-param">Calcium Hardness<span class="wc-param-unit">ppm</span></div>
+        <div class="wc-cell wc-cell-low-default">200</div>
+        <div class="wc-cell wc-cell-ideal-active">200–400</div>
+        <div class="wc-cell wc-cell-high-default">500</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" value="320" />
+      </div>
+      <div class="wc-row">
+        <div class="wc-param">Cyanuric Acid<span class="wc-param-unit">ppm</span></div>
+        <div class="wc-cell wc-cell-low-default">30</div>
+        <div class="wc-cell wc-cell-ideal-active">30–50</div>
+        <div class="wc-cell wc-cell-high-default">100</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" value="40" />
+      </div>
+      <div class="wc-row">
+        <div class="wc-param">Salt<span class="wc-param-unit">ppm</span></div>
+        <div class="wc-cell wc-cell-low-default">&lt;2700</div>
+        <div class="wc-cell wc-cell-ideal-active">2700–3500</div>
+        <div class="wc-cell wc-cell-high-default">&gt;3500</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" value="3100" />
+      </div>
+      <div class="wc-row">
+        <div class="wc-param">Base Demand</div>
+        <div class="wc-cell wc-cell-empty" style="background:#111827; border:1px solid #232c3e; color:#5b6680;">—</div>
+        <div class="wc-cell wc-cell-empty" style="background:#111827; border:1px solid #232c3e; color:#5b6680;">—</div>
+        <div class="wc-cell wc-cell-empty" style="background:#111827; border:1px solid #232c3e; color:#5b6680;">—</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" />
+      </div>
+      <div class="wc-row">
+        <div class="wc-param">Acid Demand</div>
+        <div class="wc-cell wc-cell-empty" style="background:#111827; border:1px solid #232c3e; color:#5b6680;">—</div>
+        <div class="wc-cell wc-cell-empty" style="background:#111827; border:1px solid #232c3e; color:#5b6680;">—</div>
+        <div class="wc-cell wc-cell-empty" style="background:#111827; border:1px solid #232c3e; color:#5b6680;">—</div>
+        <input class="wc-note-input" type="text" placeholder="Note…" />
+      </div>
+
+      <textarea class="wc-general-notes" rows="2" placeholder="General chemistry notes…"></textarea>
+    </div>
+
+    <div class="actions-section">
+      <div class="wc-label">ACTIONS PERFORMED (optional)</div>
+      <div class="wc-hint">Check off what was completed. Unchecked items stay off the service report.</div>
+      <div class="actions-chips">
+        <div class="action-chip action-chip-checked">
+          <span class="action-check-box action-check-checked">✓</span>
+          Brush &amp; Net
+        </div>
+        <div class="action-chip action-chip-checked">
+          <span class="action-check-box action-check-checked">✓</span>
+          Vacuum
+        </div>
+        <div class="action-chip action-chip-checked">
+          <span class="action-check-box action-check-checked">✓</span>
+          Skimmer basket
+        </div>
+        <div class="action-chip action-chip-checked">
+          <span class="action-check-box action-check-checked">✓</span>
+          Check Equipment
+        </div>
+        <div class="action-chip action-chip-unchecked">
+          <span class="action-check-box action-check-unchecked"></span>
+          Back Flush / Clean filter
+        </div>
+      </div>
+      <input class="action-other-input" type="text" placeholder="Other action performed…" />
+    </div>
+
+    <div class="chems-section">
+      <div class="chems-label">CHEMICALS ADDED</div>
+      <div class="chem-row">
+        <div class="chem-name">Liquid Chlorine</div>
+        <div class="chem-unit-text">gal</div>
+        <input class="chem-input" type="number" placeholder="0" value="1.5" />
+      </div>
+      <div class="chem-row">
+        <div class="chem-name">Chlorine Tablets</div>
+        <div class="chem-unit-text">tab</div>
+        <input class="chem-input" type="number" placeholder="0" value="3" />
+      </div>
+      <div class="chem-row">
+        <div class="chem-name">Shock</div>
+        <div class="chem-unit-text">lb</div>
+        <input class="chem-input" type="number" placeholder="0" value="1" />
+      </div>
+      <div class="chem-row">
+        <div class="chem-name">pH Up</div>
+        <div style="display:flex; gap:4px;">
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#161d2c; color:#7e8aa0; border:1px solid #2c3346;">oz</span>
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#0d9488; color:#fff; border:1px solid #0d9488;">lb</span>
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#161d2c; color:#7e8aa0; border:1px solid #2c3346;">gal</span>
+        </div>
+        <input class="chem-input" type="number" placeholder="0" />
+      </div>
+      <div class="chem-row">
+        <div class="chem-name">pH Down</div>
+        <div style="display:flex; gap:4px;">
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#0d9488; color:#fff; border:1px solid #0d9488;">oz</span>
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#161d2c; color:#7e8aa0; border:1px solid #2c3346;">lb</span>
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#161d2c; color:#7e8aa0; border:1px solid #2c3346;">gal</span>
+        </div>
+        <input class="chem-input" type="number" placeholder="0" value="8" />
+      </div>
+      <div class="chem-row">
+        <div class="chem-name">Salt</div>
+        <div class="chem-unit-text">bag</div>
+        <input class="chem-input" type="number" placeholder="0" />
+      </div>
+      <div class="chem-row">
+        <div class="chem-name">Stabilizer</div>
+        <div style="display:flex; gap:4px;">
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#161d2c; color:#7e8aa0; border:1px solid #2c3346;">oz</span>
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#0d9488; color:#fff; border:1px solid #0d9488;">lb</span>
+        </div>
+        <input class="chem-input" type="number" placeholder="0" />
+      </div>
+      <div class="chem-row" style="border-bottom:none;">
+        <div class="chem-name">Phosphate Remover</div>
+        <div style="display:flex; gap:4px;">
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#0d9488; color:#fff; border:1px solid #0d9488;">oz</span>
+          <span style="font-size:12px; font-weight:700; border-radius:7px; padding:5px 8px; background:#161d2c; color:#7e8aa0; border:1px solid #2c3346;">tab</span>
+        </div>
+        <input class="chem-input" type="number" placeholder="0" value="2" />
+      </div>
+    </div>
+
+    <div class="chems-section">
+      <div class="chems-label">MISCELLANEOUS &amp; STAIN</div>
+      <div class="chem-row">
+        <div class="chem-name">Miscellaneous 1</div>
+        <div class="chem-unit-text">item</div>
+        <input class="chem-input" type="number" placeholder="0" />
+      </div>
+      <div class="chem-row" style="border-bottom:none;">
+        <div class="chem-name">Stain Remover 1</div>
+        <div class="chem-unit-text">item</div>
+        <input class="chem-input" type="number" placeholder="0" />
+      </div>
+    </div>
+
+    <div class="issue-section">
+      <div class="issue-label">ISSUE / NOTES (optional)</div>
+      <textarea class="issue-input" rows="3" placeholder="Describe any issues, unusual readings, or items to follow up on…"></textarea>
+    </div>
+
+    <div class="photos-section">
+      <div class="photos-label">PHOTOS (optional, up to 4)</div>
+      <div class="photos-grid">
+        <div class="photo-placeholder">
+          <span class="photo-placeholder-icon">📷</span>
+          <span class="photo-placeholder-text">Add</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="save-btn-section">
+      <div class="save-btn">Save visit</div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,5 @@
+body{margin:0;background:#eef0f3;font-family:'Figtree',system-ui,sans-serif;color:#0a1b36;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+a{color:#0a6f8a}
+a:hover{color:#0a2a5c}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #0a6f8a;outline-offset:2px}
